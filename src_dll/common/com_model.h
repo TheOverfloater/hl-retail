@@ -412,6 +412,19 @@ struct msurface_s
 //  06/23/2002 2300 MAH - the below version for hardware agrees
 //      with a hexadecimal data dump of these structures taken
 //      from a running game.
+
+
+#ifdef HL25_UPDATE
+// Thanks to *(int*)0 = 0XDEADBEEF for this info
+typedef struct mdisplaylist_s
+{
+	unsigned int gl_displaylist;
+	int rendermode;
+	float scrolloffset;
+	int renderDetailTexture;
+} mdisplaylist_t;
+#endif
+
 typedef struct msurface_s
 {
     int         visframe;       // should be drawn when node is crossed
@@ -445,6 +458,9 @@ typedef struct msurface_s
     color24     *samples;                   // note: this is the actual lightmap data for this surface
     decal_t     *pdecals;
 
+#ifdef HL25_UPDATE
+	mdisplaylist_t displaylist;
+#endif
 } msurface_t;
 #endif
 

@@ -151,7 +151,10 @@ bool R_CheckMSAA( void )
 		gEngfuncs.Con_Printf("MSAA is enabled. Stencil shadows will be disabled. Please add '-nofbo' to the launch parameters.\n");
 		result = false;
 	}
+	else
+	{
 		result = true;
+	}
 
 	glDeleteFramebuffers(1, &iTestGen);
 

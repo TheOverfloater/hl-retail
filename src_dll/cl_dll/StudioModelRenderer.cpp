@@ -74,7 +74,7 @@ void CStudioModelRenderer::Init( void )
 
 	m_pCvarDirect			= IEngineStudio.GetCvar( "direct" );
 
-	m_pCvarDrawShadows		= CVAR_CREATE( "r_shadows", "1", FCVAR_ARCHIVE );
+	m_pCvarDrawShadows		= CVAR_CREATE( "gl_shadows", "1", FCVAR_ARCHIVE );
 
 	m_pChromeSprite			= IEngineStudio.GetChromeSprite();
 
