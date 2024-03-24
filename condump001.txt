@@ -1,0 +1,690 @@
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c1a4j                                                                                                     
+Loading decals from c2a2                                                                                                      
+Loading decals from c2a1b                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.7 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 0 per-vertex lights stuck in solids.                                                                                  
+Removed 0 clumped matching per-vertex lights.                                                                                 
+Dimmed 2 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+***Combat state with no enemy!                                                                                                
+***Combat state with no enemy!                                                                                                
+]/impulse 107                                                                                                                 
+Texture: +a~fifties_lgt2                                                                                                      
+monster_cockroach has no view_ofs!                                                                                            
+monster_cockroach has no view_ofs!                                                                                            
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+monster_cockroach has no view_ofs!                                                                                            
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+]/condump                                                                                                                     
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  206.8ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1.HL1...                                                                
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/gargeye1.spr                                                                                                  
+loading sprites/xbeam3.spr                                                                                                    
+loading sprites/glow02.spr                                                                                                    
+loading sprites/Xsmoke1.spr                                                                                                   
+loading sprites/fire.spr                                                                                                      
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c1a4j.HL1...                                                               
+Transferring env_spark (331)                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2.HL1...                                                                
+ERROR: couldn't open.                                                                                                         
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1b.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Transferring monster_cockroach (332)                                                                                          
+Transferring monster_cockroach (333)                                                                                          
+Transferring monster_cockroach (334)                                                                                          
+Transferring env_spark (335)                                                                                                  
+Transferring monstermaker (336)                                                                                               
+Transferring monstermaker (337)                                                                                               
+Transferring monster_cockroach (338)                                                                                          
+Transferring env_spark (339)                                                                                                  
+Transferring monster_cockroach (340)                                                                                          
+Transferring monster_headcrab (341)                                                                                           
+Transferring monster_headcrab (342)                                                                                           
+Transferring monster_cockroach (343)                                                                                          
+Transferring monster_cockroach (344)                                                                                          
+Transferring monster_cockroach (345)                                                                                          
+Transferring monster_alien_slave (346)                                                                                        
+Transferring env_spark (347)                                                                                                  
+Transferring env_spark (348)                                                                                                  
+Transferring env_render (349)                                                                                                 
+Transferring monstermaker (350)                                                                                               
+Transferring monstermaker (351)                                                                                               
+Transferring weapon_tripmine (352)                                                                                            
+Transferring weapon_357 (353)                                                                                                 
+Transferring weapon_9mmAR (354)                                                                                               
+Transferring weapon_handgrenade (355)                                                                                         
+Transferring weapon_shotgun (356)                                                                                             
+Transferring weapon_9mmhandgun (357)                                                                                          
+Transferring weapon_crowbar (358)                                                                                             
+Transferring monster_cockroach (359)                                                                                          
+Transferring monster_cockroach (360)                                                                                          
+Dead end link tracks13                                                                                                        
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 16                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c1a4j                                                                                                     
+Loading decals from c2a2                                                                                                      
+Loading decals from c2a1b                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.7 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 0 per-vertex lights stuck in solids.                                                                                  
+Removed 0 clumped matching per-vertex lights.                                                                                 
+Dimmed 2 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+***Combat state with no enemy!                                                                                                
+***Combat state with no enemy!                                                                                                
+]/impulse 107                                                                                                                 
+Texture: +a~fifties_lgt2                                                                                                      
+monster_cockroach has no view_ofs!                                                                                            
+monster_cockroach has no view_ofs!                                                                                            
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+monster_cockroach has no view_ofs!                                                                                            
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+]/condump                                                                                                                     
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  206.8ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1.HL1...                                                                
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/gargeye1.spr                                                                                                  
+loading sprites/xbeam3.spr                                                                                                    
+loading sprites/glow02.spr                                                                                                    
+loading sprites/Xsmoke1.spr                                                                                                   
+loading sprites/fire.spr                                                                                                      
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c1a4j.HL1...                                                               
+Transferring env_spark (331)                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2.HL1...                                                                
+ERROR: couldn't open.                                                                                                         
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1b.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Transferring monster_cockroach (332)                                                                                          
+Transferring monster_cockroach (333)                                                                                          
+Transferring monster_cockroach (334)                                                                                          
+Transferring env_spark (335)                                                                                                  
+Transferring monstermaker (336)                                                                                               
+Transferring monstermaker (337)                                                                                               
+Transferring monster_cockroach (338)                                                                                          
+Transferring env_spark (339)                                                                                                  
+Transferring monster_cockroach (340)                                                                                          
+Transferring monster_headcrab (341)                                                                                           
+Transferring monster_headcrab (342)                                                                                           
+Transferring monster_cockroach (343)                                                                                          
+Transferring monster_cockroach (344)                                                                                          
+Transferring monster_cockroach (345)                                                                                          
+Transferring monster_alien_slave (346)                                                                                        
+Transferring env_spark (347)                                                                                                  
+Transferring env_spark (348)                                                                                                  
+Transferring env_render (349)                                                                                                 
+Transferring monstermaker (350)                                                                                               
+Transferring monstermaker (351)                                                                                               
+Transferring weapon_tripmine (352)                                                                                            
+Transferring weapon_357 (353)                                                                                                 
+Transferring weapon_9mmAR (354)                                                                                               
+Transferring weapon_handgrenade (355)                                                                                         
+Transferring weapon_shotgun (356)                                                                                             
+Transferring weapon_9mmhandgun (357)                                                                                          
+Transferring weapon_crowbar (358)                                                                                             
+Transferring monster_cockroach (359)                                                                                          
+Transferring monster_cockroach (360)                                                                                          
+Dead end link tracks13                                                                                                        
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 16                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c1a4j                                                                                                     
+Loading decals from c2a2                                                                                                      
+Loading decals from c2a1b                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.7 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 0 per-vertex lights stuck in solids.                                                                                  
+Removed 0 clumped matching per-vertex lights.                                                                                 
+Dimmed 2 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+***Combat state with no enemy!                                                                                                
+***Combat state with no enemy!                                                                                                
+]/impulse 107                                                                                                                 
+Texture: +a~fifties_lgt2                                                                                                      
+monster_cockroach has no view_ofs!                                                                                            
+monster_cockroach has no view_ofs!                                                                                            
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+monster_cockroach has no view_ofs!                                                                                            
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+]/condump                                                                                                                     
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  206.8ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1.HL1...                                                                
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/gargeye1.spr                                                                                                  
+loading sprites/xbeam3.spr                                                                                                    
+loading sprites/glow02.spr                                                                                                    
+loading sprites/Xsmoke1.spr                                                                                                   
+loading sprites/fire.spr                                                                                                      
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c1a4j.HL1...                                                               
+Transferring env_spark (331)                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2.HL1...                                                                
+ERROR: couldn't open.                                                                                                         
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1b.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Transferring monster_cockroach (332)                                                                                          
+Transferring monster_cockroach (333)                                                                                          
+Transferring monster_cockroach (334)                                                                                          
+Transferring env_spark (335)                                                                                                  
+Transferring monstermaker (336)                                                                                               
+Transferring monstermaker (337)                                                                                               
+Transferring monster_cockroach (338)                                                                                          
+Transferring env_spark (339)                                                                                                  
+Transferring monster_cockroach (340)                                                                                          
+Transferring monster_headcrab (341)                                                                                           
+Transferring monster_headcrab (342)                                                                                           
+Transferring monster_cockroach (343)                                                                                          
+Transferring monster_cockroach (344)                                                                                          
+Transferring monster_cockroach (345)                                                                                          
+Transferring monster_alien_slave (346)                                                                                        
+Transferring env_spark (347)                                                                                                  
+Transferring env_spark (348)                                                                                                  
+Transferring env_render (349)                                                                                                 
+Transferring monstermaker (350)                                                                                               
+Transferring monstermaker (351)                                                                                               
+Transferring weapon_tripmine (352)                                                                                            
+Transferring weapon_357 (353)                                                                                                 
+Transferring weapon_9mmAR (354)                                                                                               
+Transferring weapon_handgrenade (355)                                                                                         
+Transferring weapon_shotgun (356)                                                                                             
+Transferring weapon_9mmhandgun (357)                                                                                          
+Transferring weapon_crowbar (358)                                                                                             
+Transferring monster_cockroach (359)                                                                                          
+Transferring monster_cockroach (360)                                                                                          
+Dead end link tracks13                                                                                                        
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 16                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c1a4j                                                                                                     
+Loading decals from c2a2                                                                                                      
+Loading decals from c2a1b                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.7 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 0 per-vertex lights stuck in solids.                                                                                  
+Removed 0 clumped matching per-vertex lights.                                                                                 
+Dimmed 2 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+***Combat state with no enemy!                                                                                                
+***Combat state with no enemy!                                                                                                
+]/impulse 107                                                                                                                 
+Texture: +a~fifties_lgt2                                                                                                      
+monster_cockroach has no view_ofs!                                                                                            
+monster_cockroach has no view_ofs!                                                                                            
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+monster_cockroach has no view_ofs!                                                                                            
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+]/condump                                                                                                                     
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  206.8ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1.HL1...                                                                
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/gargeye1.spr                                                                                                  
+loading sprites/xbeam3.spr                                                                                                    
+loading sprites/glow02.spr                                                                                                    
+loading sprites/Xsmoke1.spr                                                                                                   
+loading sprites/fire.spr                                                                                                      
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c1a4j.HL1...                                                               
+Transferring env_spark (331)                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2.HL1...                                                                
+ERROR: couldn't open.                                                                                                         
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1b.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Transferring monster_cockroach (332)                                                                                          
+Transferring monster_cockroach (333)                                                                                          
+Transferring monster_cockroach (334)                                                                                          
+Transferring env_spark (335)                                                                                                  
+Transferring monstermaker (336)                                                                                               
+Transferring monstermaker (337)                                                                                               
+Transferring monster_cockroach (338)                                                                                          
+Transferring env_spark (339)                                                                                                  
+Transferring monster_cockroach (340)                                                                                          
+Transferring monster_headcrab (341)                                                                                           
+Transferring monster_headcrab (342)                                                                                           
+Transferring monster_cockroach (343)                                                                                          
+Transferring monster_cockroach (344)                                                                                          
+Transferring monster_cockroach (345)                                                                                          
+Transferring monster_alien_slave (346)                                                                                        
+Transferring env_spark (347)                                                                                                  
+Transferring env_spark (348)                                                                                                  
+Transferring env_render (349)                                                                                                 
+Transferring monstermaker (350)                                                                                               
+Transferring monstermaker (351)                                                                                               
+Transferring weapon_tripmine (352)                                                                                            
+Transferring weapon_357 (353)                                                                                                 
+Transferring weapon_9mmAR (354)                                                                                               
+Transferring weapon_handgrenade (355)                                                                                         
+Transferring weapon_shotgun (356)                                                                                             
+Transferring weapon_9mmhandgun (357)                                                                                          
+Transferring weapon_crowbar (358)                                                                                             
+Transferring monster_cockroach (359)                                                                                          
+Transferring monster_cockroach (360)                                                                                          
+Dead end link tracks13                                                                                                        
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 16                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c1a4j                                                                                                     
+Loading decals from c2a2                                                                                                      
+Loading decals from c2a1b                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.7 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 0 per-vertex lights stuck in solids.                                                                                  
+Removed 0 clumped matching per-vertex lights.                                                                                 
+Dimmed 2 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+***Combat state with no enemy!                                                                                                
+***Combat state with no enemy!                                                                                                
+]/impulse 107                                                                                                                 
+Texture: +a~fifties_lgt2                                                                                                      
+monster_cockroach has no view_ofs!                                                                                            
+monster_cockroach has no view_ofs!                                                                                            
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+monster_cockroach has no view_ofs!                                                                                            
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+]/condump                                                                                                                     
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  206.8ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1.HL1...                                                                
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/gargeye1.spr                                                                                                  
+loading sprites/xbeam3.spr                                                                                                    
+loading sprites/glow02.spr                                                                                                    
+loading sprites/Xsmoke1.spr                                                                                                   
+loading sprites/fire.spr                                                                                                      
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c1a4j.HL1...                                                               
+Transferring env_spark (331)                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2.HL1...                                                                
+ERROR: couldn't open.                                                                                                         
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a1b.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Transferring monster_cockroach (332)                                                                                          
+Transferring monster_cockroach (333)                                                                                          
+Transferring monster_cockroach (334)                                                                                          
+Transferring env_spark (335)                                                                                                  
+Transferring monstermaker (336)                                                                                               
+Transferring monstermaker (337)                                                                                               
+Transferring monster_cockroach (338)                                                                                          
+Transferring env_spark (339)                                                                                                  
+Transferring monster_cockroach (340)                                                                                          
+Transferring monster_headcrab (341)                                                                                           
+Transferring monster_headcrab (342)                                                                                           
+Transferring monster_cockroach (343)                                                                                          
+Transferring monster_cockroach (344)                                                                                          
+Transferring monster_cockroach (345)                                                                                          
+Transferring monster_alien_slave (346)                                                                                        
+Transferring env_spark (347)                                                                                                  
+Transferring env_spark (348)                                                                                                  
+Transferring env_render (349)                                                                                                 
+Transferring monstermaker (350)                                                                                               
+Transferring monstermaker (351)                                                                                               
+Transferring weapon_tripmine (352)                                                                                            
+Transferring weapon_357 (353)                                                                                                 
+Transferring weapon_9mmAR (354)                                                                                               
+Transferring weapon_handgrenade (355)                                                                                         
+Transferring weapon_shotgun (356)                                                                                             
+Transferring weapon_9mmhandgun (357)                                                                                          
+Transferring weapon_crowbar (358)                                                                                             
+Transferring monster_cockroach (359)                                                                                          
+Transferring monster_cockroach (360)                                                                                          
+Dead end link tracks13                                                                                                        
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 16                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c1a4j                                                                                                     
+Loading decals from c2a2                                                                                                      
+Loading decals from c2a1b                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.7 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 0 per-vertex lights stuck in solids.                                                                                  
+Removed 0 clumped matching per-vertex lights.                                                                                 
+Dimmed 2 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+***Combat state with no enemy!                                                                                                
+***Combat state with no enemy!                                                                                                
+]/impulse 107                                                                                                                 
+Texture: +a~fifties_lgt2                                                                                                      
+monster_cockroach has no view_ofs!                                                                                            
+monster_cockroach has no view_ofs!                                                                                            
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+BuildNearestRoute() - monster_headcrab has no nearest node!                                                                   
+GetPathToEnemy failed!!                                                                                                       
+monster_headcrab Failed to move (0)!                                                                                          
+Schedule Failed at 1!                                                                                                         
+monster_cockroach has no view_ofs!                                                                                            
+]/impulse 107                                                                                                                 
+Texture: +0~fifts_lght3                                                                                                       
+]/condump                                                                                                                     

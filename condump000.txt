@@ -1,0 +1,411 @@
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c2a2a                                                                                                     
+Loading decals from c2a2c                                                                                                     
+Loading decals from c2a2c                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.5 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 5 per-vertex lights stuck in solids.                                                                                  
+Removed 6 clumped matching per-vertex lights.                                                                                 
+Dimmed 5 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+]/impulse 107                                                                                                                 
+Texture: ~light3b                                                                                                             
+Saving game to D:\Games\Half-Life\hlretail\SAVE\quick.sav...                                                                  
+]/condump                                                                                                                     
+Spawn Server c2a2b1: [c2a2b1c2a2c-2]                                                                                          
+Clearing memory                                                                                                               
+loading maps/c2a2b1.bsp                                                                                                       
+Using WAD File: D:\Games\Half-Life/hlretail/decals.wad                                                                        
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/halflife.wad                                                                                            
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  180.9ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2b1.HL1...                                                              
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/shockwave.spr                                                                                                 
+loading sprites/bigspit.spr                                                                                                   
+loading sprites/tinyspit.spr                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2a.HL1...                                                               
+Merging changes for global: func_door                                                                                         
+Merging changes for global: func_tracktrain                                                                                   
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2c.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Merging changes for global: func_breakable                                                                                    
+Transferring ammo_9mmAR (144)                                                                                                 
+Merging changes for global: func_breakable                                                                                    
+Transferring ammo_357 (146)                                                                                                   
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Transferring monster_human_grunt (243)                                                                                        
+Transferring monster_human_grunt (244)                                                                                        
+Transferring ammo_357 (245)                                                                                                   
+Transferring monster_human_grunt (246)                                                                                        
+Transferring monster_alien_slave (247)                                                                                        
+Transferring monster_alien_slave (248)                                                                                        
+Transferring monster_alien_slave (249)                                                                                        
+Transferring weapon_satchel (250)                                                                                             
+Transferring weapon_tripmine (251)                                                                                            
+Transferring weapon_357 (252)                                                                                                 
+Transferring weapon_9mmAR (253)                                                                                               
+Transferring weapon_shotgun (254)                                                                                             
+Transferring weapon_9mmhandgun (255)                                                                                          
+Transferring weapon_crowbar (256)                                                                                             
+Transferring weapon_handgrenade (257)                                                                                         
+Dead end link z3track2j                                                                                                       
+Dead end link z3track2j                                                                                                       
+Dead end link train19                                                                                                         
+Dead end link z3track2j                                                                                                       
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 14                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c2a2a                                                                                                     
+Loading decals from c2a2c                                                                                                     
+Loading decals from c2a2c                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.5 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 5 per-vertex lights stuck in solids.                                                                                  
+Removed 6 clumped matching per-vertex lights.                                                                                 
+Dimmed 5 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+]/impulse 107                                                                                                                 
+Texture: ~light3b                                                                                                             
+Saving game to D:\Games\Half-Life\hlretail\SAVE\quick.sav...                                                                  
+]/condump                                                                                                                     
+Spawn Server c2a2b1: [c2a2b1c2a2c-2]                                                                                          
+Clearing memory                                                                                                               
+loading maps/c2a2b1.bsp                                                                                                       
+Using WAD File: D:\Games\Half-Life/hlretail/decals.wad                                                                        
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/halflife.wad                                                                                            
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  180.9ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2b1.HL1...                                                              
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/shockwave.spr                                                                                                 
+loading sprites/bigspit.spr                                                                                                   
+loading sprites/tinyspit.spr                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2a.HL1...                                                               
+Merging changes for global: func_door                                                                                         
+Merging changes for global: func_tracktrain                                                                                   
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2c.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Merging changes for global: func_breakable                                                                                    
+Transferring ammo_9mmAR (144)                                                                                                 
+Merging changes for global: func_breakable                                                                                    
+Transferring ammo_357 (146)                                                                                                   
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Transferring monster_human_grunt (243)                                                                                        
+Transferring monster_human_grunt (244)                                                                                        
+Transferring ammo_357 (245)                                                                                                   
+Transferring monster_human_grunt (246)                                                                                        
+Transferring monster_alien_slave (247)                                                                                        
+Transferring monster_alien_slave (248)                                                                                        
+Transferring monster_alien_slave (249)                                                                                        
+Transferring weapon_satchel (250)                                                                                             
+Transferring weapon_tripmine (251)                                                                                            
+Transferring weapon_357 (252)                                                                                                 
+Transferring weapon_9mmAR (253)                                                                                               
+Transferring weapon_shotgun (254)                                                                                             
+Transferring weapon_9mmhandgun (255)                                                                                          
+Transferring weapon_crowbar (256)                                                                                             
+Transferring weapon_handgrenade (257)                                                                                         
+Dead end link z3track2j                                                                                                       
+Dead end link z3track2j                                                                                                       
+Dead end link train19                                                                                                         
+Dead end link z3track2j                                                                                                       
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 14                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c2a2a                                                                                                     
+Loading decals from c2a2c                                                                                                     
+Loading decals from c2a2c                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.5 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 5 per-vertex lights stuck in solids.                                                                                  
+Removed 6 clumped matching per-vertex lights.                                                                                 
+Dimmed 5 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+]/impulse 107                                                                                                                 
+Texture: ~light3b                                                                                                             
+Saving game to D:\Games\Half-Life\hlretail\SAVE\quick.sav...                                                                  
+]/condump                                                                                                                     
+Spawn Server c2a2b1: [c2a2b1c2a2c-2]                                                                                          
+Clearing memory                                                                                                               
+loading maps/c2a2b1.bsp                                                                                                       
+Using WAD File: D:\Games\Half-Life/hlretail/decals.wad                                                                        
+Using WAD File: D:\Games\Half-Life/hlretail/liquids.wad                                                                       
+Using WAD File: valve/halflife.wad                                                                                            
+Using WAD File: valve/xeno.wad                                                                                                
+Texture load:  180.9ms                                                                                                        
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2b1.HL1...                                                              
+                                                                                                                              
+GAME SKILL LEVEL:2                                                                                                            
+loading sprites/hotglow.spr                                                                                                   
+loading sprites/smoke.spr                                                                                                     
+loading sprites/laserdot.spr                                                                                                  
+loading sprites/streak.spr                                                                                                    
+loading sprites/xbeam1.spr                                                                                                    
+loading sprites/XSpark1.spr                                                                                                   
+loading sprites/muz1.spr                                                                                                      
+loading sprites/laserbeam.spr                                                                                                 
+loading sprites/zerogxplode.spr                                                                                               
+loading sprites/WXplo1.spr                                                                                                    
+loading sprites/steam1.spr                                                                                                    
+loading sprites/bubble.spr                                                                                                    
+loading sprites/bloodspray.spr                                                                                                
+loading sprites/blood.spr                                                                                                     
+loading sprites/explode1.spr                                                                                                  
+                                                                                                                              
+*Graph Loaded!                                                                                                                
+loading sprites/shockwave.spr                                                                                                 
+loading sprites/bigspit.spr                                                                                                   
+loading sprites/tinyspit.spr                                                                                                  
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2a.HL1...                                                               
+Merging changes for global: func_door                                                                                         
+Merging changes for global: func_tracktrain                                                                                   
+Loading game from D:\Games\Half-Life\hlretail\SAVE\c2a2c.HL1...                                                               
+Transferring player (1)                                                                                                       
+loading sprites/xffloor.spr                                                                                                   
+loading sprites/glow01.spr                                                                                                    
+loading sprites/eexplo.spr                                                                                                    
+**Graph Pointers Set!                                                                                                         
+Merging changes for global: func_breakable                                                                                    
+Transferring ammo_9mmAR (144)                                                                                                 
+Merging changes for global: func_breakable                                                                                    
+Transferring ammo_357 (146)                                                                                                   
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Merging changes for global: func_breakable                                                                                    
+Transferring monster_human_grunt (243)                                                                                        
+Transferring monster_human_grunt (244)                                                                                        
+Transferring ammo_357 (245)                                                                                                   
+Transferring monster_human_grunt (246)                                                                                        
+Transferring monster_alien_slave (247)                                                                                        
+Transferring monster_alien_slave (248)                                                                                        
+Transferring monster_alien_slave (249)                                                                                        
+Transferring weapon_satchel (250)                                                                                             
+Transferring weapon_tripmine (251)                                                                                            
+Transferring weapon_357 (252)                                                                                                 
+Transferring weapon_9mmAR (253)                                                                                               
+Transferring weapon_shotgun (254)                                                                                             
+Transferring weapon_9mmhandgun (255)                                                                                          
+Transferring weapon_crowbar (256)                                                                                             
+Transferring weapon_handgrenade (257)                                                                                         
+Dead end link z3track2j                                                                                                       
+Dead end link z3track2j                                                                                                       
+Dead end link train19                                                                                                         
+Dead end link z3track2j                                                                                                       
+Game started                                                                                                                  
+                                                                                                                              
+BUILD 2056 SERVER (0 CRC)                                                                                                     
+Server # 14                                                                                                                   
+Serverinfo packet received.                                                                                                   
+loading sprites/640hud3.spr                                                                                                   
+loading sprites/640hud7.spr                                                                                                   
+loading sprites/640hud8.spr                                                                                                   
+loading sprites/640hud9.spr                                                                                                   
+loading sprites/640hud5.spr                                                                                                   
+loading sprites/640hud6.spr                                                                                                   
+loading sprites/crosshairs.spr                                                                                                
+loading sprites/640hud4.spr                                                                                                   
+loading sprites/640hud1.spr                                                                                                   
+loading sprites/640hud2.spr                                                                                                   
+loading sprites/iplayer.spr                                                                                                   
+loading sprites/iplayerblue.spr                                                                                               
+loading sprites/iplayerred.spr                                                                                                
+loading sprites/iplayerdead.spr                                                                                               
+loading sprites/tile.spr                                                                                                      
+loading sprites/camera.spr                                                                                                    
+loading sprites/voiceicon.spr                                                                                                 
+Remote host:  Half-Life                                                                                                       
+Verifying and downloading resources...                                                                                        
+Setting up renderer...                                                                                                        
+Verifying and uploading resources...                                                                                          
+Custom resources total 6.15K                                                                                                  
+  Decals:  6.15K                                                                                                              
+----------------------                                                                                                        
+Resources to request: 0 bytes                                                                                                 
+Custom resource propagation complete.                                                                                         
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Decals must hit mod_brush!                                                                                                    
+Loading decals from c2a2a                                                                                                     
+Loading decals from c2a2c                                                                                                     
+Loading decals from c2a2c                                                                                                     
+CL_SignonReply: 1                                                                                                             
+31.5 megabyte data cache                                                                                                      
+CL_SignonReply: 2                                                                                                             
+Removed 5 per-vertex lights stuck in solids.                                                                                  
+Removed 6 clumped matching per-vertex lights.                                                                                 
+Dimmed 5 near matching per-vertex lights.                                                                                     
+loading sprites/640_pain.spr                                                                                                  
+]/impulse 107                                                                                                                 
+Texture: ~light3b                                                                                                             
+Saving game to D:\Games\Half-Life\hlretail\SAVE\quick.sav...                                                                  
+]/condump                                                                                                                     
