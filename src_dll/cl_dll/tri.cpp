@@ -103,10 +103,8 @@ Non-transparent triangles-- add them here
 */
 void DLLEXPORT HUD_DrawNormalTriangles( void )
 {
-
 	gHUD.m_Spectator.DrawOverview();
 	gFog.RenderFog();
-	SVD_DrawNormalTriangles();
 
 	gELightList.DrawNormal();
 
@@ -124,6 +122,8 @@ Render any triangles with transparent rendermode needs here
 */
 void DLLEXPORT HUD_DrawTransparentTriangles( void )
 {
+	SVD_DrawTransparentTriangles();
+
 	gFog.BlackFog();
 
 #if defined( TEST_IT )

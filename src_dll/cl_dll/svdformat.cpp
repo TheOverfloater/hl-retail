@@ -474,17 +474,6 @@ void SVD_Clear( void )
 	}
 
 	g_iNumSVDFiles = NULL;
-}
-
-/*
-====================
-SVD_VidInit
-
-====================
-*/
-void SVD_VidInit( void )
-{
-	SVD_Clear();
 
 	// Flag for next load
 	g_bNeedLoadSVD = true;

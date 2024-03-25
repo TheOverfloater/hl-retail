@@ -2588,6 +2588,8 @@ StudioDrawShadow
 */
 void CStudioModelRenderer::StudioDrawShadow ( void )
 {
+	StudioSetBuffer();
+
 	// Set SVD header
 	m_pSVDHeader = (svdheader_t*)m_pRenderModel->visdata;
 
@@ -2618,6 +2620,8 @@ void CStudioModelRenderer::StudioDrawShadow ( void )
 		glEnable(GL_CULL_FACE);
 		glDisable(GL_STENCIL_TEST_TWO_SIDE_EXT);
 	}
+
+	StudioClearBuffer();
 }
 
 /*

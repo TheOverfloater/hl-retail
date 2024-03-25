@@ -864,12 +864,10 @@ void CHud :: VidInit( void )
 	m_TextMessage.VidInit();
 	m_StatusIcons.VidInit();
 	GetClientVoiceMgr()->VidInit();
-	SVD_VidInit();
+
 	gELightList.VidInit();
-
 	gFog.VidInit();
-
-	SVD_CreateStencilFBO();
+	SVD_VidInit();
 }
 
 int CHud::MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf)

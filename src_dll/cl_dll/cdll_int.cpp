@@ -32,6 +32,7 @@ extern "C"
 #include "hud_servers.h"
 #include "vgui_int.h"
 #include "interface.h"
+#include "svd_render.h"
 
 #define DLLEXPORT __declspec( dllexport )
 
@@ -203,7 +204,6 @@ redraw the HUD.
 int DLLEXPORT HUD_Redraw( float time, int intermission )
 {
 	gHUD.Redraw( time, intermission );
-
 	return 1;
 }
 
@@ -254,6 +254,8 @@ void DLLEXPORT HUD_Frame( double time )
 	ServersThink( time );
 
 	GetClientVoiceMgr()->Frame(time);
+
+	SVD_Frame();
 }
 
 

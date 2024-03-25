@@ -60,6 +60,7 @@ int			g_visFrame = 0;
 int			g_frameCount = 0;
 vec3_t		g_viewOrigin;
 bool		g_bFBOSupported = false;
+bool		g_bAlertAboutMSAA = false;
 
 // Latest free texture
 GLuint		g_freeTextureIndex = 131072;
@@ -71,6 +72,9 @@ GLuint		g_depthStencilRBO = 0;
 // framebuffer object
 GLuint		g_stencilFBO = 0;
 
+// Steam HL's FBO
+GLint		g_steamFBO = 0;
+
 // The renderer object, created on the stack.
 extern CGameStudioModelRenderer g_StudioRenderer;
 
@@ -78,6 +82,7 @@ extern CGameStudioModelRenderer g_StudioRenderer;
 PFNGLGENRENDERBUFFERSPROC glGenRenderbuffers = NULL;
 PFNGLBINDRENDERBUFFERPROC glBindRenderbuffer = NULL;
 PFNGLRENDERBUFFERSTORAGEPROC glRenderbufferStorage = NULL;
+PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC glRenderbufferStorageMultisample = NULL;
 PFNGLFRAMEBUFFERRENDERBUFFERPROC glFramebufferRenderbuffer = NULL;
 PFNGLFRAMEBUFFERTEXTURE2DPROC glFramebufferTexture2D = NULL;
 PFNGLCHECKFRAMEBUFFERSTATUSPROC glCheckFramebufferStatus = NULL;
@@ -147,17 +152,11 @@ bool R_CheckMSAA( void )
 
 	bool result;
 	if(iTestGen != 1)
-	{
-		gEngfuncs.Con_Printf("MSAA is enabled. Stencil shadows will be disabled. Please add '-nofbo' to the launch parameters.\n");
 		result = false;
-	}
 	else
-	{
 		result = true;
-	}
 
 	glDeleteFramebuffers(1, &iTestGen);
-
 	return result;
 }
 
@@ -173,17 +172,19 @@ void SVD_CreateStencilFBO( void )
 	if(!g_bFBOSupported)
 		return;
 
-	SVD_Shutdown();
+	SCREENINFO	scrinfo;
+	scrinfo.iSize = sizeof(scrinfo);
+	GetScreenInfo(&scrinfo);
 
 	// Set up main rendering target
 	glGenRenderbuffers(1, &g_colorRBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, g_colorRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, ScreenWidth, ScreenHeight);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, scrinfo.iWidth, scrinfo.iHeight);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	glGenRenderbuffers(1, &g_depthStencilRBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, g_depthStencilRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, ScreenWidth, ScreenHeight);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, scrinfo.iWidth, scrinfo.iHeight);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	glGenFramebuffers(1, &g_stencilFBO);
@@ -199,6 +200,32 @@ void SVD_CreateStencilFBO( void )
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+/*
+====================
+SVD_VidInit
+
+====================
+*/
+void SVD_VidInit( void )
+{
+	SVD_Clear();
+}
+
+/*
+====================
+SVD_Frame
+
+====================
+*/
+void SVD_Frame( void )
+{
+	if(g_bAlertAboutMSAA)
+	{
+		gEngfuncs.Con_Printf("MSAA is enabled. Stencil shadows will be disabled. Add '-nofbo' to the launch parameters to disable MSAA.\n");
+		g_bAlertAboutMSAA = false;
+	}
 }
 
 /*
@@ -219,6 +246,7 @@ void SVD_Init( void )
 	glGenRenderbuffers = (PFNGLGENRENDERBUFFERSPROC)wglGetProcAddress("glGenRenderbuffers");
 	glBindRenderbuffer = (PFNGLBINDRENDERBUFFERPROC)wglGetProcAddress("glBindRenderbuffer");
 	glRenderbufferStorage = (PFNGLRENDERBUFFERSTORAGEPROC)wglGetProcAddress("glRenderbufferStorage");
+	glRenderbufferStorageMultisample = (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEPROC)wglGetProcAddress("glRenderbufferStorageMultisample");
 	glFramebufferRenderbuffer = (PFNGLFRAMEBUFFERRENDERBUFFERPROC)wglGetProcAddress("glFramebufferRenderbuffer");
 	glFramebufferTexture2D = (PFNGLFRAMEBUFFERTEXTURE2DPROC)wglGetProcAddress("glFramebufferTexture2D");
 	glCheckFramebufferStatus = (PFNGLCHECKFRAMEBUFFERSTATUSPROC)wglGetProcAddress("glCheckFramebufferStatus");
@@ -235,12 +263,20 @@ void SVD_Init( void )
 		&& glDeleteRenderbuffers && glDeleteFramebuffers && glGetFramebufferAttachmentParameteriv
 		&& glGetRenderbufferParameteriv && glBlitFramebuffer)
 	{
-		// We can use an FBO to supply a stencil buffer
+		// Functions loaded fine
 		g_bFBOSupported = true;
 	}
 
 	if(!R_CheckMSAA())
+	{
+		g_bAlertAboutMSAA = true;
 		g_bFBOSupported = false;
+	}
+	else
+	{
+		// Create the stencil FBO
+		SVD_CreateStencilFBO();
+	}
 }
 
 /*
@@ -340,18 +376,17 @@ void SVD_CalcRefDef ( ref_params_t* pparams )
 		glViewport(0, 0, ScreenWidth, ScreenHeight);
 	}
 
+	// Might be using hacky DLL
 	glClear( GL_STENCIL_BUFFER_BIT );
-
-	g_StudioRenderer.StudioSetBuffer();
 }
 
 /*
 ====================
-SVD_DrawNormalTriangles
+SVD_DrawTransparentTriangles
 
 ====================
 */
-void SVD_DrawNormalTriangles ( void )
+void SVD_DrawTransparentTriangles ( void )
 {
 	if(g_StudioRenderer.m_pCvarDrawShadows->value < 2)
 		return;
@@ -400,23 +435,30 @@ void SVD_DrawNormalTriangles ( void )
 	glDisable(GL_BLEND);
 	glDisable(GL_STENCIL_TEST);
 
-	g_StudioRenderer.StudioClearBuffer();
 	glPopAttrib();
 
+	SVD_PerformFBOBlit();
+}
+
+/*
+====================
+SVD_PerformFBOBlit
+
+====================
+*/
+void SVD_PerformFBOBlit ( void )
+{
 	// If supported, use FBO
-	if(g_bFBOSupported)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	if(!g_bFBOSupported)
+		return;
 
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, g_stencilFBO);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, g_stencilFBO);
+	glReadBuffer(GL_COLOR_ATTACHMENT0);
 
-		glReadBuffer(GL_COLOR_ATTACHMENT0);
-		//glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBlitFramebuffer(0, 0, ScreenWidth, ScreenHeight, 0, 0, ScreenWidth, ScreenHeight, GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
-		glBlitFramebuffer(0, 0, ScreenWidth, ScreenHeight, 0, 0, ScreenWidth, ScreenHeight, GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-	}
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
