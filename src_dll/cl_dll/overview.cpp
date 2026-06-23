@@ -59,7 +59,7 @@ int CHudOverview::Draw(float flTime)
 	float v0[3]={0,0,0}, v1[3]={64,64,0};
 	gEngfuncs.Overview_WorldToScreen(v0, &x1, &y1);
 	gEngfuncs.Overview_WorldToScreen(v1, &x2, &y2);
-	float scale = abs(x2 - x1);
+	float scale = std::abs(x2 - x1);
 
 	// loop through all the players and draw them on the map
 	for (int i = 1; i < MAX_PLAYERS; i++)

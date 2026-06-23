@@ -427,10 +427,13 @@ int RecursiveLightPoint( model_t* pworld, mnode_t *node, const vec3_t &start, co
 // GetModelLighting
 //
 //===========================================
-void GetModelLighting( const Vector& lightposition, int effects, const Vector& skyVector, const Vector& skyColor, float directLight, alight_t& lighting )
+void GetModelLighting( const Vector& lightposition, int effects, const Vector& skyVector, const Vector& skyColor, float directLight, alight_t& lighting, bool& isLitBySky )
 {
 	Vector lightdirection;
 	Vector lightcolor;
+
+	// Reset this
+	isLitBySky = false;
 
 	// First try getting it from the sky
 	bool gotlighting = false;
@@ -448,6 +451,7 @@ void GetModelLighting( const Vector& lightposition, int effects, const Vector& s
 			lightcolor = skyColor;
 			lightdirection = skyVector;
 			gotlighting = true;
+			isLitBySky = true;
 		}
 	}
 

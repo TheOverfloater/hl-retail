@@ -335,6 +335,8 @@ public:
 
 	// Basic lighting info
 	alight_t		m_lightingInfo;
+	// TRUE if lit by sky
+	bool			m_isLitBySky;
 
 	// Closest entity light
 	int				m_iClosestLight;

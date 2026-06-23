@@ -858,7 +858,7 @@ void CEnvSound :: Spawn( )
 void CEnvSound :: Touch( CBaseEntity *pOther )
 {
 	// Ignore touches by corpses
-	if (!pOther->IsAlive())
+	if (!pOther->IsAlive() || !pOther->IsPlayer())
 		return;
 
 	// Check that env_sound actually hits client's view origin

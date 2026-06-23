@@ -41,7 +41,7 @@
 #include "com_model.h"
 
 extern mspriteframe_t *GetSpriteFrame ( model_t *mod, int frame );
-extern void GetModelLighting( const Vector& lightposition, int effects, const Vector& skyVector, const Vector& skyColor, float directLight, alight_t& lighting );
+extern void GetModelLighting( const Vector& lightposition, int effects, const Vector& skyVector, const Vector& skyColor, float directLight, alight_t& lighting, bool& isLitBySky );
 
 // Global engine <-> studio model rendering code interface
 engine_studio_api_t IEngineStudio;
@@ -1863,13 +1863,21 @@ StudioSetupShadows
 void CStudioModelRenderer::StudioSetupShadows( void )
 {
 	// Determine the shading angle
-	if(m_iClosestLight == -1)
+	if(m_isLitBySky)
+	{
+		m_vShadowDirection.x = m_pSkylightDirX->value;
+		m_vShadowDirection.y = m_pSkylightDirY->value;
+		m_vShadowDirection.z = m_pSkylightDirZ->value;
+		VectorScale(m_vShadowDirection, -1, m_vShadowDirection);
+		m_shadowMethodType = SHADOW_TYPE_DIRECTIONAL;
+	}
+	else if(m_iClosestLight == -1)
 	{
 		vec3_t shadeVector;
 		shadeVector[0] = 0.3;
 		shadeVector[1] = 0.5;
 		shadeVector[2] = 1;
-
+		
 		m_vShadowDirection = shadeVector;
 		m_shadowMethodType = SHADOW_TYPE_DIRECTIONAL;
 	}
@@ -3008,5 +3016,5 @@ void CStudioModelRenderer::StudioDynamicLight( void )
 	skyColor.z = m_pSkylightColorB->value;
 	VectorScale(skyColor, 1.0f/255.0f, skyColor);
 
-	GetModelLighting(m_pCurrentEntity->origin, m_pCurrentEntity->curstate.effects, skyVector, skyColor, m_pCvarDirect->value, m_lightingInfo);
+	GetModelLighting(m_pCurrentEntity->origin, m_pCurrentEntity->curstate.effects, skyVector, skyColor, m_pCvarDirect->value, m_lightingInfo, m_isLitBySky);
 }
