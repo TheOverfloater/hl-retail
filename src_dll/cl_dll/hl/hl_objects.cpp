@@ -63,15 +63,21 @@ void UpdateBeams ( void )
 
 	gEngfuncs.pEventAPI->EV_PopPMStates();
 
+	Vector vecTraceEnd;
+	if(gEngfuncs.PM_PointContents(tr.endpos, NULL) == CONTENTS_SKY)
+		vecTraceEnd = vecEnd;
+	else
+		vecTraceEnd = tr.endpos;
+
 	if ( pBeam )
 	{
-		pBeam->target = tr.endpos;
+		pBeam->target = vecTraceEnd;
 		pBeam->die	  = gEngfuncs.GetClientTime() + 0.1; // We keep it alive just a little bit forward in the future, just in case.
 	}
 		
 	if ( pBeam2 )
 	{
-		pBeam2->target = tr.endpos;
+		pBeam2->target = vecTraceEnd;
 		pBeam2->die	   = gEngfuncs.GetClientTime() + 0.1; // We keep it alive just a little bit forward in the future, just in case.
 	}
 }

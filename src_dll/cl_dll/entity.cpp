@@ -20,6 +20,7 @@
 #include "pmtrace.h"	
 #include "pm_shared.h"
 #include "fog.h"
+#include "mp3.h"
 
 #define DLLEXPORT __declspec( dllexport )
 
@@ -541,6 +542,8 @@ void DLLEXPORT HUD_CreateEntities( void )
 	Game_AddObjects();
 
 	GetClientVoiceMgr()->CreateEntities();
+
+	gMP3.W_CreateEntities();
 }
 
 /*

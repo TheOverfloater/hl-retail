@@ -29,6 +29,7 @@
 enginefuncs_t g_engfuncs;
 globalvars_t  *gpGlobals;
 
+extern void LinkUserMessages( void );
 
 #ifdef _WIN32
 
@@ -44,6 +45,7 @@ BOOL WINAPI DllMain(
 	else if (fdwReason == DLL_PROCESS_DETACH)
     {
     }
+
 	return TRUE;
 }
 
@@ -51,6 +53,10 @@ void DLLEXPORT GiveFnptrsToDll(	enginefuncs_t* pengfuncsFromEngine, globalvars_t
 {
 	memcpy(&g_engfuncs, pengfuncsFromEngine, sizeof(enginefuncs_t));
 	gpGlobals = pGlobals;
+
+
+	// Make sure any necessary user messages have been registered
+	LinkUserMessages();
 }
 
 

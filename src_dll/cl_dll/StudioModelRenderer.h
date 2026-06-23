@@ -19,6 +19,12 @@
 
 extern engine_studio_api_t IEngineStudio;
 
+enum shadowtype_t
+{
+	SHADOW_TYPE_POINTLIGHT = 0,
+	SHADOW_TYPE_DIRECTIONAL
+};
+
 /*
 ====================
 CStudioModelRenderer
@@ -287,7 +293,10 @@ public:
 
 	// Height of the shadow to be rendered
 	float			m_flShadowHeight;
+	// Light origin for shadow
 	vec3_t			m_vShadowLightOrigin;
+	// Light direction for directional shadow
+	vec3_t			m_vShadowDirection;
 
 	// Entity mins/maxs
 	vec3_t			m_vMins;
@@ -303,6 +312,8 @@ public:
 
 	// Light origins in bone space
 	vec3_t			m_lightLocalOrigins[MAX_MODEL_ENTITY_LIGHTS][MAXSTUDIOBONES];
+	// Light normals in bone space
+	vec3_t			m_localLightNormals[MAX_MODEL_ENTITY_LIGHTS][MAXSTUDIOBONES];
 
 	// Ambient light vector for each bone
 	vec3_t			m_lightVectors[MAXSTUDIOBONES];
@@ -327,6 +338,8 @@ public:
 
 	// Closest entity light
 	int				m_iClosestLight;
+	// Shadowing method
+	shadowtype_t	m_shadowMethodType;
 
 	// Interpolated entity origin
 	vec3_t			m_vEntityRenderOrigin;

@@ -430,7 +430,7 @@ bool SVD_LoadSVDForModel( model_t* pmodel )
 	pmodel->visdata = (byte*)psvdheader;
 	return true;
 }
-
+extern model_t* g_pWorld;
 /*
 ====================
 SVD_CheckInit
@@ -457,6 +457,8 @@ void SVD_CheckInit( void )
 	}
 
 	g_bNeedLoadSVD = false;
+
+	g_pWorld = IEngineStudio.GetModelByIndex(1);
 }
 
 /*

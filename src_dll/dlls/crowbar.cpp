@@ -39,7 +39,9 @@ enum gauss_e {
 	CROWBAR_ATTACK2MISS,
 	CROWBAR_ATTACK2HIT,
 	CROWBAR_ATTACK3MISS,
-	CROWBAR_ATTACK3HIT
+	CROWBAR_ATTACK3HIT,
+	CROWBAR_IDLE2,
+	CROWBAR_IDLE3
 };
 
 
@@ -311,8 +313,36 @@ int CCrowbar::Swing( int fFirst )
 
 		
 	}
+
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(2, 5);
 	return fDidHit;
 }
 
+void CCrowbar::WeaponIdle( void )
+{
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
+		return;
 
+	int sequenceIndex;
+	float sequenceTime;
 
+	switch(RANDOM_LONG(0, 2))
+	{
+	default:
+	case 0:
+		sequenceIndex = CROWBAR_IDLE;
+		sequenceTime = 2.77;
+		break;
+	case 1:
+		sequenceIndex = CROWBAR_IDLE2;
+		sequenceTime = 5.4;
+		break;
+	case 2:
+		sequenceIndex = CROWBAR_IDLE3;
+		sequenceTime = 5.4;
+		break;
+	}
+
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + sequenceTime;
+	SendWeaponAnim( sequenceIndex );
+}

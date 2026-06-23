@@ -33,6 +33,7 @@ extern "C"
 #include "vgui_int.h"
 #include "interface.h"
 #include "svd_render.h"
+#include "mp3.h"
 
 #define DLLEXPORT __declspec( dllexport )
 
@@ -255,7 +256,7 @@ void DLLEXPORT HUD_Frame( double time )
 
 	GetClientVoiceMgr()->Frame(time);
 
-	SVD_Frame();
+	gMP3.W_HudFrame();
 }
 
 

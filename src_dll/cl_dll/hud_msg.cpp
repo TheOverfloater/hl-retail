@@ -20,6 +20,7 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 #include "r_efx.h"
+#include "mp3.h"
 
 #define MAX_CLIENTS 32
 
@@ -83,7 +84,6 @@ int CHud :: MsgFunc_GameMode(const char *pszName, int iSize, void *pbuf )
 	return 1;
 }
 
-
 int CHud :: MsgFunc_Damage(const char *pszName, int iSize, void *pbuf )
 {
 	int		armor, blood;
@@ -116,5 +116,22 @@ int CHud :: MsgFunc_Concuss( const char *pszName, int iSize, void *pbuf )
 		this->m_StatusIcons.EnableIcon("dmg_concuss",255,160,0);
 	else
 		this->m_StatusIcons.DisableIcon("dmg_concuss");
+	return 1;
+}
+
+int CHud :: MsgFunc_PlayMP3( const char *pszName, int iSize, void *pbuf ) //AJH -Killar MP3
+{
+	BEGIN_READ( pbuf, iSize );
+
+	const char* pstrpath = READ_STRING();
+	int timeoffset = READ_LONG();
+	bool islooped = (READ_BYTE() == 1) ? true : false;
+	bool clearmp3 = (READ_BYTE() == 1) ? true : false;
+
+	if(!clearmp3)
+		gMP3.PlayMP3( pstrpath, timeoffset, islooped );
+	else
+		gMP3.StopMP3( pstrpath );
+
 	return 1;
 }

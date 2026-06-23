@@ -104,9 +104,9 @@ public:
 	int					m_afButtonPressed;
 	int					m_afButtonReleased;
 	
-	edict_t			   *m_pentSndLast;			// last sound entity to modify player room type
 	float				m_flSndRoomtype;		// last roomtype set by sound entity
-	float				m_flSndRange;			// dist from player to sound entity
+	float				m_flClientSndRoomype;	// Room type on client
+	float				m_flLastClosestDistance;
 
 	float				m_flFallVelocity;
 	
@@ -269,6 +269,10 @@ public:
 	void EXPORT PlayerDeathThink( void );
 	void PlayerUse( void );
 
+	void PlayMusic( const char* pstrFilename, bool loopMusic );
+	void ClearMusic( const char* pstrFilename );
+	bool IsPlayingMusic( const char* pstrFilename );
+
 	void CheckSuitUpdate();
 	void SetSuitUpdate(char *name, int fgroup, int iNoRepeat);
 	void UpdateGeigerCounter( void );
@@ -300,6 +304,11 @@ public:
 	float m_flPlayAftershock;
 	float m_flNextAmmoBurn;// while charging, when to absorb another unit of player's ammo?
 	
+	string_t m_playingMP3Filename;
+	float m_mp3PlaybackBeginTime;
+	BOOL m_isMP3Looped;
+	BOOL m_restoreMusic;
+
 	//Player ID
 	void InitStatusBar( void );
 	void UpdateStatusBar( void );
@@ -311,6 +320,7 @@ public:
 	
 	float m_flNextChatTime;
 	BOOL m_bSendMessages;
+	int	m_lastLevelAudioPlayed;
 };
 
 #define AUTOAIM_2DEGREES  0.0348994967025

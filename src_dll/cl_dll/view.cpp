@@ -28,6 +28,8 @@
 #include "fog.h"
 #include "svd_render.h"
 #include "elightlist.h"
+#include "lightstyle.h"
+#include "mp3.h"
 
 // Spectator Mode
 extern "C" 
@@ -252,7 +254,7 @@ float V_CalcRoll (vec3_t angles, vec3_t velocity, float rollangle, float rollspe
     
 	side = DotProduct (velocity, right);
     sign = side < 0 ? -1 : 1;
-    side = fabs( side );
+    side = std::abs( side );
     
 	value = rollangle;
     if (side < rollspeed)
@@ -322,7 +324,7 @@ void V_DriftPitch ( struct ref_params_s *pparams )
 	// don't count small mouse motion
 	if (pd.nodrift)
 	{
-		if ( fabs( pparams->cmd->forwardmove ) < cl_forwardspeed->value )
+		if (std::abs( pparams->cmd->forwardmove ) < cl_forwardspeed->value )
 			pd.driftmove = 0;
 		else
 			pd.driftmove += pparams->frametime;
@@ -875,7 +877,7 @@ void V_SmoothInterpolateAngles( float * startAngle, float * endAngle, float * fi
 			d += 360.0f;
 		}
 
-		absd = fabs(d);
+		absd = std::abs(d);
 
 		if ( absd > 0.01f )
 		{
@@ -1102,7 +1104,7 @@ float MaxAngleBetweenAngles(  float * a1, float * a2 )
 			d += 360;
 		}
 
-		d = fabs(d);
+		d = std::abs(d);
 
 		if ( d > maxd )
 			maxd=d;
@@ -1641,6 +1643,8 @@ void DLLEXPORT V_CalcRefdef( struct ref_params_s *pparams )
 		V_CalcNormalRefdef ( pparams );
 	}
 
+	gLightStyles.Animate();
+
 /*
 // Example of how to overlay the whole screen with red at 50 % alpha
 #define SF_TEST
@@ -1659,9 +1663,12 @@ void DLLEXPORT V_CalcRefdef( struct ref_params_s *pparams )
 	}
 #endif
 */
-	gELightList.CalcRefDef();
 	SVD_CalcRefDef(pparams);
 	gFog.CalcRefDef(pparams);
+	gELightList.CalcRefDef();
+
+	// Have MP3 update
+	gMP3.CalcRefDef(pparams);
 }
 
 /*
@@ -1951,10 +1958,10 @@ void PerpendicularVector( vec3_t& dst, const vec3_t& src )
 	*/
 	for ( pos = 0, i = 0; i < 3; i++ )
 	{
-		if ( fabs( src[i] ) < minelem )
+		if (std::abs( src[i] ) < minelem )
 		{
 			pos = i;
-			minelem = fabs( src[i] );
+			minelem = std::abs( src[i] );
 		}
 	}
 	tempvec[0] = tempvec[1] = tempvec[2] = 0.0F;

@@ -15,6 +15,7 @@
 #ifndef EXTDLL_H
 #define EXTDLL_H
 
+#include <cstdlib>
 
 //
 // Global header file for extension DLLs

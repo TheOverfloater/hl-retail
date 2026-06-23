@@ -19,6 +19,7 @@
 #include "fog.h"
 #include "svd_render.h"
 #include "elightlist.h"
+#include "mp3.h"
 
 #define DLLEXPORT __declspec( dllexport )
 
@@ -107,6 +108,8 @@ void DLLEXPORT HUD_DrawNormalTriangles( void )
 	gFog.RenderFog();
 
 	gELightList.DrawNormal();
+
+	gMP3.W_DrawNormalTriangles();
 
 #if defined( TEST_IT )
 //	Draw_Triangles();

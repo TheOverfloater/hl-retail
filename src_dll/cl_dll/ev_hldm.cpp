@@ -284,11 +284,12 @@ void EV_HLDM_DecalGunshot( pmtrace_t *pTrace, int iBulletType )
 		switch( iBulletType )
 		{
 		case BULLET_PLAYER_9MM:
-		case BULLET_MONSTER_9MM:
 		case BULLET_PLAYER_MP5:
-		case BULLET_MONSTER_MP5:
-		case BULLET_PLAYER_BUCKSHOT:
 		case BULLET_PLAYER_357:
+		case BULLET_PLAYER_BUCKSHOT:
+		case BULLET_MONSTER_9MM:
+		case BULLET_MONSTER_MP5:
+		case BULLET_MONSTER_12MM:
 		default:
 			// smoke and decal
 			EV_HLDM_GunshotDecalTrace( pTrace, EV_HLDM_DamageDecal( pe ) );
@@ -327,9 +328,12 @@ int EV_HLDM_CheckTracer( int idx, float *vecSrc, float *end, float *forward, flo
 
 		switch( iBulletType )
 		{
+		case BULLET_PLAYER_9MM:
 		case BULLET_PLAYER_MP5:
-		case BULLET_MONSTER_MP5:
+		case BULLET_PLAYER_357:
+		case BULLET_PLAYER_BUCKSHOT:
 		case BULLET_MONSTER_9MM:
+		case BULLET_MONSTER_MP5:
 		case BULLET_MONSTER_12MM:
 		default:
 			EV_CreateTracer( vecTracerSrc, end );
@@ -396,10 +400,16 @@ void EV_HLDM_FireBullets( int idx, float *forward, float *right, float *up, int 
 		gEngfuncs.pEventAPI->EV_SetTraceHull( 2 );
 		gEngfuncs.pEventAPI->EV_PlayerTrace( vecSrc, vecEnd, PM_STUDIO_BOX, -1, &tr );
 
-		tracer = EV_HLDM_CheckTracer( idx, vecSrc, tr.endpos, forward, right, iBulletType, iTracerFreq, tracerCount );
+		Vector vecTracerEnd;
+		if(gEngfuncs.PM_PointContents(tr.endpos, NULL) != CONTENTS_SKY)
+			vecTracerEnd = tr.endpos;
+		else
+			vecTracerEnd = vecEnd;
+
+		tracer = EV_HLDM_CheckTracer( idx, vecSrc, vecTracerEnd, forward, right, iBulletType, iTracerFreq, tracerCount );
 
 		// do damage, paint decals
-		if ( tr.fraction != 1.0 )
+		if ( tr.fraction != 1.0 && gEngfuncs.PM_PointContents(tr.endpos, NULL) != CONTENTS_SKY)
 		{
 			switch(iBulletType)
 			{
@@ -482,7 +492,7 @@ void EV_FireGlock1( event_args_t *args )
 	
 	VectorCopy( forward, vecAiming );
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, 0, args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 1, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 }
 
 void EV_FireGlock2( event_args_t *args )
@@ -527,7 +537,7 @@ void EV_FireGlock2( event_args_t *args )
 	
 	VectorCopy( forward, vecAiming );
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, &tracerCount[idx-1], args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 1, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 	
 }
 //======================
@@ -584,11 +594,11 @@ void EV_FireShotGunDouble( event_args_t *args )
 
 	if ( gEngfuncs.GetMaxClients() > 1 )
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 8, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.17365, 0.04362 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 8, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 1, &tracerCount[idx-1], 0.17365, 0.04362 );
 	}
 	else
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 12, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 12, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 1, &tracerCount[idx-1], 0.08716, 0.08716 );
 	}
 }
 
@@ -636,11 +646,11 @@ void EV_FireShotGunSingle( event_args_t *args )
 
 	if ( gEngfuncs.GetMaxClients() > 1 )
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 4, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.04362 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 4, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 1, &tracerCount[idx-1], 0.08716, 0.04362 );
 	}
 	else
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 6, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 6, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 1, &tracerCount[idx-1], 0.08716, 0.08716 );
 	}
 }
 //======================
@@ -701,11 +711,11 @@ void EV_FireMP5( event_args_t *args )
 
 	if ( gEngfuncs.GetMaxClients() > 1 )
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 1, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 	}
 	else
 	{
-		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 1, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 	}
 }
 
@@ -787,7 +797,7 @@ void EV_FirePython( event_args_t *args )
 	
 	VectorCopy( forward, vecAiming );
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_357, 0, 0, args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_357, 1, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 }
 //======================
 //	    PHYTON END 
@@ -910,6 +920,14 @@ void EV_FireGauss( event_args_t *args )
 
 		gEngfuncs.pEventAPI->EV_PopPMStates();
 
+		bool hitSky = gEngfuncs.PM_PointContents(tr.endpos, NULL) == CONTENTS_SKY ? true : false;
+
+		Vector vecTraceEnd;
+		if(hitSky)
+			vecTraceEnd = vecDest;
+		else
+			vecTraceEnd = tr.endpos;
+
 		if ( tr.allsolid )
 			break;
 
@@ -924,7 +942,7 @@ void EV_FireGauss( event_args_t *args )
 
 			gEngfuncs.pEfxAPI->R_BeamEntPoint( 
 				idx | 0x1000,
-				tr.endpos,
+				vecTraceEnd,
 				m_iBeam,
 				0.1,
 				m_fPrimaryFire ? 1.0 : 2.5,
@@ -941,7 +959,7 @@ void EV_FireGauss( event_args_t *args )
 		else
 		{
 			gEngfuncs.pEfxAPI->R_BeamPoints( vecSrc,
-				tr.endpos,
+				vecTraceEnd,
 				m_iBeam,
 				0.1,
 				m_fPrimaryFire ? 1.0 : 2.5,
@@ -955,6 +973,9 @@ void EV_FireGauss( event_args_t *args )
 				m_fPrimaryFire ? 0 : 255
 			);
 		}
+
+		if(hitSky)
+			break;
 
 		pEntity = gEngfuncs.pEventAPI->EV_GetPhysent( tr.ent );
 		if ( pEntity == NULL )
@@ -1442,6 +1463,12 @@ void EV_EgonFire( event_args_t *args )
 
 			gEngfuncs.pEventAPI->EV_PopPMStates();
 
+			Vector vecTraceEnd;
+			if(gEngfuncs.PM_PointContents(tr.endpos, NULL) == CONTENTS_SKY)
+				vecTraceEnd = vecEnd;
+			else
+				vecTraceEnd = tr.endpos;
+
 			int iBeamModelIndex = gEngfuncs.pEventAPI->EV_FindModelIndex( EGON_BEAM_SPRITE );
 
 			float r = 50.0f;
@@ -1455,12 +1482,12 @@ void EV_EgonFire( event_args_t *args )
 			}
 				
 		
-			pBeam = gEngfuncs.pEfxAPI->R_BeamEntPoint ( idx | 0x1000, tr.endpos, iBeamModelIndex, 99999, 3.5, 0.2, 0.7, 55, 0, 0, r, g, b );
+			pBeam = gEngfuncs.pEfxAPI->R_BeamEntPoint ( idx | 0x1000, vecTraceEnd, iBeamModelIndex, 99999, 3.5, 0.2, 0.7, 55, 0, 0, r, g, b );
 
 			if ( pBeam )
 				 pBeam->flags |= ( FBEAM_SINENOISE );
  
-			pBeam2 = gEngfuncs.pEfxAPI->R_BeamEntPoint ( idx | 0x1000, tr.endpos, iBeamModelIndex, 99999, 5.0, 0.08, 0.7, 25, 0, 0, r, g, b );
+			pBeam2 = gEngfuncs.pEfxAPI->R_BeamEntPoint ( idx | 0x1000, vecTraceEnd, iBeamModelIndex, 99999, 5.0, 0.08, 0.7, 25, 0, 0, r, g, b );
 		}
 	}
 }

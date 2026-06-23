@@ -51,7 +51,8 @@ extern int gmsgSayText;
 
 extern int g_teamplay;
 
-void LinkUserMessages( void );
+extern void LinkUserMessages( void );
+extern void UTIL_ResetLightStyles( void );
 
 /*
  * used by kill command and disconnect command
@@ -70,6 +71,7 @@ void set_suicide_frame(entvars_t* pev)
 }
 
 
+
 /*
 ===========
 ClientConnect
@@ -84,7 +86,6 @@ BOOL ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddres
 // a client connecting during an intermission can cause problems
 //	if (intermission_running)
 //		ExitIntermission ();
-
 }
 
 
@@ -439,6 +440,18 @@ void ClientCommand( edict_t *pEntity )
 		edict_t *pentSpawnSpot = g_pGameRules->GetPlayerSpawnSpot( pPlayer );
 		pPlayer->StartObserver( pev->origin, VARS(pentSpawnSpot)->angles);
 	}
+	else if( FStrEq(pcmd, "clearmusic") )
+	{
+		if(CMD_ARGC() > 1)
+		{
+			CBasePlayer * pPlayer = GetClassPtr((CBasePlayer *)pev);
+			pPlayer->ClearMusic(CMD_ARGV(1));
+		}
+		else
+		{
+			ALERT(at_console, "usage: clearmusic <mp3 filename>\n");
+		}
+	}
 	else if ( g_pGameRules->ClientCommand( GetClassPtr((CBasePlayer *)pev), pcmd ) )
 	{
 		// MenuSelect returns true only if the command is properly handled,  so don't print a warning
@@ -536,6 +549,7 @@ void ServerDeactivate( void )
 	}
 
 	g_serveractive = 0;
+	UTIL_ResetLightStyles();
 
 	// Peform any shutdown operations here...
 	//
@@ -624,6 +638,19 @@ void ParmsChangeLevel( void )
 		pSaveData->connectionCount = BuildChangeList( pSaveData->levelList, MAX_LEVEL_CONNECTIONS );
 }
 
+extern int gmsgPlayMP3;
+void PlayLevelAudio( int iTrack )
+{
+	if(iTrack < 0 || iTrack >= CTriggerCDAudio::NUM_MP3_FILES)
+		return;
+
+	MESSAGE_BEGIN( MSG_ALL, gmsgPlayMP3, NULL );
+		WRITE_STRING(CTriggerCDAudio::MP3_FILENAMES[iTrack]);
+		WRITE_LONG(0);
+		WRITE_BYTE(FALSE);
+		WRITE_BYTE(FALSE);
+	MESSAGE_END();
+}
 
 //
 // GLOBALS ASSUMED SET:  g_ulFrameCount

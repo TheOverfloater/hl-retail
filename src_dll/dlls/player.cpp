@@ -51,6 +51,7 @@ extern void CopyToBodyQue(entvars_t* pev);
 extern void respawn(entvars_t *pev, BOOL fCopyCorpse);
 extern Vector VecBModelOrigin(entvars_t *pevBModel );
 extern edict_t *EntSelectSpawnPoint( CBaseEntity *pPlayer );
+extern void UTIL_SetClientLightStyles( edict_t* pedict );
 
 // the world node graph
 extern CGraph	WorldGraph;
@@ -116,14 +117,18 @@ TYPEDESCRIPTION	CBasePlayer::m_playerSaveData[] =
 	DEFINE_FIELD( CBasePlayer, m_pTank, FIELD_EHANDLE ),
 	DEFINE_FIELD( CBasePlayer, m_iHideHUD, FIELD_INTEGER ),
 	DEFINE_FIELD( CBasePlayer, m_iFOV, FIELD_INTEGER ),
-	
+
+	DEFINE_FIELD( CBasePlayer, m_playingMP3Filename, FIELD_STRING ),
+	DEFINE_FIELD( CBasePlayer, m_mp3PlaybackBeginTime, FIELD_TIME ),
+	DEFINE_FIELD( CBasePlayer, m_isMP3Looped, FIELD_BOOLEAN ),
+	DEFINE_FIELD( CBasePlayer, m_lastLevelAudioPlayed, FIELD_INTEGER ),	
 	//DEFINE_FIELD( CBasePlayer, m_fDeadTime, FIELD_FLOAT ), // only used in multiplayer games
 	//DEFINE_FIELD( CBasePlayer, m_fGameHUDInitialized, FIELD_INTEGER ), // only used in multiplayer games
 	//DEFINE_FIELD( CBasePlayer, m_flStopExtraSoundTime, FIELD_TIME ),
 	//DEFINE_FIELD( CBasePlayer, m_fKnownItem, FIELD_INTEGER ), // reset to zero on load
 	//DEFINE_FIELD( CBasePlayer, m_iPlayerSound, FIELD_INTEGER ),	// Don't restore, set in Precache()
 	//DEFINE_FIELD( CBasePlayer, m_pentSndLast, FIELD_EDICT ),	// Don't restore, client needs reset
-	//DEFINE_FIELD( CBasePlayer, m_flSndRoomtype, FIELD_FLOAT ),	// Don't restore, client needs reset
+	DEFINE_FIELD( CBasePlayer, m_flSndRoomtype, FIELD_FLOAT ),	// Don't restore, client needs reset
 	//DEFINE_FIELD( CBasePlayer, m_flSndRange, FIELD_FLOAT ),	// Don't restore, client needs reset
 	//DEFINE_FIELD( CBasePlayer, m_fNewAmmo, FIELD_INTEGER ), // Don't restore, client needs reset
 	//DEFINE_FIELD( CBasePlayer, m_flgeigerRange, FIELD_FLOAT ),	// Don't restore, reset in Precache()
@@ -188,6 +193,8 @@ int gmsgStatusText = 0;
 int gmsgStatusValue = 0; 
 int gmsgFog = 0;
 int gmsgELight = 0;
+int gmsgLightStyle = 0;
+int gmsgPlayMP3 = 0;
 
 void LinkUserMessages( void )
 {
@@ -234,7 +241,9 @@ void LinkUserMessages( void )
 	gmsgStatusText = REG_USER_MSG("StatusText", -1);
 	gmsgStatusValue = REG_USER_MSG("StatusValue", 3); 
 	gmsgFog = REG_USER_MSG("Fog", -1); 
-	gmsgELight = REG_USER_MSG("ELight", -1); 
+	gmsgELight = REG_USER_MSG("ELight", -1);
+	gmsgLightStyle = REG_USER_MSG("LightStyle", -1);
+	gmsgPlayMP3 = REG_USER_MSG("PlayMP3", -1);
 }
 
 LINK_ENTITY_TO_CLASS( player, CBasePlayer );
@@ -1891,6 +1900,7 @@ void CBasePlayer::PreThink(void)
 		pev->velocity = g_vecZero;
 	}
 }
+
 /* Time based Damage works as follows: 
 	1) There are several types of timebased damage:
 
@@ -1980,7 +1990,7 @@ void CBasePlayer::CheckTimeBasedDamage()
 		return;
 
 	// only check for time based damage approx. every 2 seconds
-	if (abs(gpGlobals->time - m_tbdPrev) < 2.0)
+	if (std::abs(gpGlobals->time - m_tbdPrev) < 2.0)
 		return;
 	
 	m_tbdPrev = gpGlobals->time;
@@ -2837,6 +2847,7 @@ void CBasePlayer::Spawn( void )
 	m_fWeapon = FALSE;
 	m_pClientActiveItem = NULL;
 	m_iClientBattery = -1;
+	m_mp3PlaybackBeginTime = 0;
 
 	// reset all ammo values to 0
 	for ( int i = 0; i < MAX_AMMO_SLOTS; i++ )
@@ -2891,15 +2902,18 @@ void CBasePlayer :: Precache( void )
 
 	m_iTrain = TRAIN_NEW;
 
-	// Make sure any necessary user messages have been registered
-	LinkUserMessages();
-
 	m_iUpdateTime = 5;  // won't update for 1/2 a second
 
 	if ( gInitHUD )
 		m_fInitHUD = TRUE;
 
 	m_bSendMessages = TRUE;
+
+	if(!FStringNull(m_playingMP3Filename))
+		m_restoreMusic = TRUE;
+
+	m_flClientSndRoomype = 0;
+	m_flLastClosestDistance = 0;
 }
 
 
@@ -3864,12 +3878,53 @@ ForceClientDllUpdate to ensure the demo gets messages
 reflecting all of the HUD state info.
 =========================================================
 */
+extern void UTIL_LightStyleThink( void );
+extern void PlayLevelAudio( int iTrack );
 void CBasePlayer :: UpdateClientData( void )
 {
 	if( m_bSendMessages )
 	{
 		InitializeEntities();
 		m_bSendMessages = FALSE;
+
+		// Play level audio if any
+		if(gpGlobals->cdAudioTrack > 0 && gpGlobals->cdAudioTrack != m_lastLevelAudioPlayed)
+		{
+			int iTrack = gpGlobals->cdAudioTrack;
+			if(iTrack < CTriggerCDAudio::NUM_MP3_FILES)
+			{
+				const char* pstrTrack = CTriggerCDAudio::MP3_FILENAMES[iTrack];
+				PlayMusic(pstrTrack, false);
+			}
+
+			m_lastLevelAudioPlayed = iTrack;
+		}
+	}
+
+	UTIL_LightStyleThink();
+
+	if(m_flSndRoomtype != m_flClientSndRoomype)
+	{
+		MESSAGE_BEGIN( MSG_ONE, SVC_ROOMTYPE, NULL, pev );		// use the magic #1 for "one client"
+			WRITE_SHORT( (short)m_flSndRoomtype );					// sequence number
+		MESSAGE_END();
+
+		m_flClientSndRoomype = m_flSndRoomtype;
+	}
+
+	if(!FStringNull(m_playingMP3Filename) && m_restoreMusic && m_mp3PlaybackBeginTime)
+	{
+		float timeDelta = gpGlobals->time - m_mp3PlaybackBeginTime;
+		int miliseconds = timeDelta * 1000; // convert to miliseconds
+
+		MESSAGE_BEGIN( MSG_ONE, gmsgPlayMP3, NULL, edict() );
+			WRITE_STRING(STRING(m_playingMP3Filename));
+			WRITE_LONG(miliseconds);
+			WRITE_BYTE(m_isMP3Looped);
+			WRITE_BYTE(FALSE);
+		MESSAGE_END();
+
+		m_restoreMusic = FALSE;
 	}
 
 	if (m_fInitHUD)
@@ -4103,6 +4158,9 @@ void CBasePlayer :: UpdateClientData( void )
 //=========================================================
 void CBasePlayer :: InitializeEntities ( void )
 {
+	UTIL_SetClientLightStyles(edict());
+
+
 	edict_t* pEdict = g_engfuncs.pfnPEntityOfEntIndex( 1 );
 	CBaseEntity* pEntity;
 
@@ -4352,8 +4410,8 @@ Vector CBasePlayer :: AutoaimDeflection( Vector &vecSrc, float flDist, float flD
 		if (DotProduct (dir, gpGlobals->v_forward ) < 0)
 			continue;
 
-		dot = fabs( DotProduct (dir, gpGlobals->v_right ) ) 
-			+ fabs( DotProduct (dir, gpGlobals->v_up ) ) * 0.5;
+		dot = std::abs( DotProduct (dir, gpGlobals->v_right ) ) 
+			+ std::abs( DotProduct (dir, gpGlobals->v_up ) ) * 0.5;
 
 		// tweek for distance
 		dot *= 1.0 + 0.2 * ((center - vecSrc).Length() / flDist);
@@ -4600,6 +4658,62 @@ BOOL CBasePlayer :: SwitchWeapon( CBasePlayerItem *pWeapon )
 	pWeapon->Deploy( );
 
 	return TRUE;
+}
+
+//=========================================================
+// 
+//=========================================================
+void CBasePlayer :: PlayMusic( const char* pstrFilename, bool loopMusic ) 
+{
+	m_playingMP3Filename = ALLOC_STRING(pstrFilename);
+	m_mp3PlaybackBeginTime = gpGlobals->time;
+	m_isMP3Looped = loopMusic ? TRUE : FALSE;
+	m_restoreMusic = FALSE;
+
+	MESSAGE_BEGIN( MSG_ONE, gmsgPlayMP3, NULL, edict() );
+		WRITE_STRING(pstrFilename);
+		WRITE_LONG(0);
+		WRITE_BYTE(m_isMP3Looped);
+		WRITE_BYTE(FALSE);
+	MESSAGE_END();
+}
+
+//=========================================================
+// 
+//=========================================================
+void CBasePlayer :: ClearMusic( const char* pstrFilename )
+{
+	if(FStringNull(m_playingMP3Filename))
+		return;
+
+	if(strcmp(pstrFilename, STRING(m_playingMP3Filename)))
+		return;
+
+	m_playingMP3Filename = 0;
+	m_mp3PlaybackBeginTime = 0;
+	m_isMP3Looped = FALSE;
+	m_restoreMusic = FALSE;
+
+	MESSAGE_BEGIN( MSG_ONE, gmsgPlayMP3, NULL, edict() );
+		WRITE_STRING(STRING(m_playingMP3Filename));
+		WRITE_LONG(0);
+		WRITE_BYTE(FALSE);
+		WRITE_BYTE(TRUE);
+	MESSAGE_END();
+}
+
+//=========================================================
+// 
+//=========================================================
+bool CBasePlayer :: IsPlayingMusic( const char* pstrFilename )
+{
+	if(FStringNull(m_playingMP3Filename))
+		return false;
+
+	if(!strcmp(pstrFilename, STRING(m_playingMP3Filename)))
+		return true;
+	else
+		return false;
 }
 
 //=========================================================

@@ -155,7 +155,7 @@ void CStudioModelRenderer::StudioCalcBoneAdj( float dadt, float *adj, const byte
 			// check for 360% wrapping
 			if (pbonecontroller[j].type & STUDIO_RLOOP)
 			{
-				if (abs(pcontroller1[i] - pcontroller2[i]) > 128)
+				if (std::abs(pcontroller1[i] - pcontroller2[i]) > 128)
 				{
 					int a, b;
 					a = (pcontroller1[j] + 128) % 256;
@@ -1870,12 +1870,14 @@ void CStudioModelRenderer::StudioSetupShadows( void )
 		shadeVector[1] = 0.5;
 		shadeVector[2] = 1;
 
-		m_vShadowLightOrigin = m_pCurrentEntity->origin + shadeVector*8196;
+		m_vShadowDirection = shadeVector;
+		m_shadowMethodType = SHADOW_TYPE_DIRECTIONAL;
 	}
 	else
 	{
 		elight_t* plight = m_pEntityLights[m_iClosestLight];
 		m_vShadowLightOrigin = plight->origin;
+		m_shadowMethodType = SHADOW_TYPE_POINTLIGHT;
 	}
 
 	if( m_pCvarDrawShadows->value == 1 )
@@ -2110,10 +2112,13 @@ void CStudioModelRenderer::StudioEntityLight ( void )
 
 		for(int j = 0; j < m_pStudioHeader->numbones; j++)
 		{
-			transOrigin[0] = m_pEntityLights[i]->origin[0] - (*m_pbonetransform)[j][0][3];
-			transOrigin[1] = m_pEntityLights[i]->origin[1] - (*m_pbonetransform)[j][1][3];
-			transOrigin[2] = m_pEntityLights[i]->origin[2] - (*m_pbonetransform)[j][2][3];
+			transOrigin[0] = plight->origin[0] - (*m_pbonetransform)[j][0][3];
+			transOrigin[1] = plight->origin[1] - (*m_pbonetransform)[j][1][3];
+			transOrigin[2] = plight->origin[2] - (*m_pbonetransform)[j][2][3];
 			VectorIRotate(transOrigin, (*m_pbonetransform)[j], m_lightLocalOrigins[i][j]);
+			
+			if(plight->type == EL_TYPE_MAP_SURFLIGHT)
+				VectorIRotate(plight->normal, (*m_pbonetransform)[j], m_localLightNormals[i][j]);
 		}
 	}
 }
@@ -2174,6 +2179,7 @@ __forceinline void CStudioModelRenderer::StudioLightsforVertex( int index, byte 
 	static float radius;
 	static float dist;
 	static float attn;
+	static float sdot;
  
 	static elight_t* plight;
 
@@ -2181,17 +2187,46 @@ __forceinline void CStudioModelRenderer::StudioLightsforVertex( int index, byte 
 	{
 		plight = m_pEntityLights[i];
 		
-		// Inverse square radius
-		radius = plight->radius*plight->radius;
 		VectorSubtract(m_lightLocalOrigins[i][boneindex], origin, dir);
+
+		switch(plight->type)
+		{
+		case EL_TYPE_MAP_SURFLIGHT:
+			{
+				dist = VectorNormalize(dir);
+				sdot = -DotProduct(dir, m_localLightNormals[i][boneindex]);
+				sdot = min(max(sdot, 0.0), 1.0);
+
+				const float ON_EPSILON = 0.01;
+				if (sdot > ON_EPSILON/10)
+					attn = (sdot / (dist * dist)) * plight->intensity;
+				else
+					attn = 0;
+			}
+			break;
+		case EL_TYPE_MAP_POINTLIGHT:
+			{
+				dist = VectorNormalize(dir);
+				attn = (1.0f / (dist * dist)) * plight->intensity;
+			}
+			break;
+		case EL_TYPE_NORMAL:
+		default:
+			{
+				// Inverse square radius
+				radius = plight->radius*plight->radius;
+				VectorSubtract(m_lightLocalOrigins[i][boneindex], origin, dir);
 		
-		dist = DotProduct(dir, dir);
-		attn = max((dist/radius-1)*-1, 0);
+				dist = DotProduct(dir, dir);
+				attn = max((dist/radius-1)*-1, 0);
+
+				VectorNormalizeFast(dir);
+			}
+			break;
+		}
 
 		m_lightStrengths[i][index] = attn;
-
-		VectorNormalizeFast(dir);
-		VectorCopy(dir, m_lightShadeVectors[i][index]);
+		m_lightShadeVectors[i][index] = dir;
 	}
 }
 
@@ -2569,6 +2604,9 @@ bool CStudioModelRenderer::StudioShouldDrawShadow ( void )
 	if( !m_pRenderModel->visdata )
 		return false;
 
+	if( m_pCurrentEntity->curstate.rendermode != kRenderNormal )
+		return false;
+
 	// Fucking butt-ugly hack to make the shadows less annoying
 	pmtrace_t tr;
 	gEngfuncs.pEventAPI->EV_SetTraceHull( 2 );
@@ -2632,7 +2670,7 @@ StudioDrawShadowVolume
 */
 void CStudioModelRenderer::StudioDrawShadowVolume( void )
 {
-	float plane[4];
+	Vector plane;
 	vec3_t lightdir;
 	vec3_t *pv1, *pv2, *pv3;
 
@@ -2643,14 +2681,25 @@ void CStudioModelRenderer::StudioDrawShadowVolume( void )
 	byte *pvertbone = ((byte *)m_pSVDHeader + m_pSVDSubModel->vertinfoindex);
 
 	// Calculate vertex coords
-	for (int i = 0, j = 0; i < m_pSVDSubModel->numverts; i++, j+=2)
+	if(m_shadowMethodType == SHADOW_TYPE_POINTLIGHT)
 	{
-		VectorTransform(psvdverts[i], (*m_pbonetransform)[pvertbone[i]], m_vertexTransform[j]);
+		for (int i = 0, j = 0; i < m_pSVDSubModel->numverts; i++, j+=2)
+		{
+			VectorTransform(psvdverts[i], (*m_pbonetransform)[pvertbone[i]], m_vertexTransform[j]);
 
-		VectorSubtract(m_vertexTransform[j], m_vShadowLightOrigin, lightdir);
-		VectorNormalizeFast(lightdir);
+			VectorSubtract(m_vertexTransform[j], m_vShadowLightOrigin, lightdir);
+			VectorNormalizeFast(lightdir);
 
-		VectorMA(m_vertexTransform[j], 4096, lightdir, m_vertexTransform[j+1]);
+			VectorMA(m_vertexTransform[j], 4096, lightdir, m_vertexTransform[j+1]);
+		}
+	}
+	else // SHADOW_TYPE_DIRECTIONAL
+	{
+		for (int i = 0, j = 0; i < m_pSVDSubModel->numverts; i++, j+=2)
+		{
+			VectorTransform(psvdverts[i], (*m_pbonetransform)[pvertbone[i]], m_vertexTransform[j]);
+			VectorMA(m_vertexTransform[j], -4096, m_vShadowDirection, m_vertexTransform[j+1]);
+		}
 	}
 
 	// Process the faces
@@ -2666,9 +2715,19 @@ void CStudioModelRenderer::StudioDrawShadowVolume( void )
 		plane[0] = pv1->y * (pv2->z - pv3->z) + pv2->y * (pv3->z - pv1->z) + pv3->y * (pv1->z - pv2->z);
 		plane[1] = pv1->z * (pv2->x - pv3->x) + pv2->z * (pv3->x - pv1->x) + pv3->z * (pv1->x - pv2->x);
 		plane[2] = pv1->x * (pv2->y - pv3->y) + pv2->x * (pv3->y - pv1->y) + pv3->x * (pv1->y - pv2->y);
-		plane[3] = -( pv1->x * (pv2->y * pv3->z - pv3->y * pv2->z) + pv2->x * ( pv3->y * pv1->z - pv1->y * pv3->z ) + pv3->x * ( pv1->y * pv2->z - pv2->y * pv1->z ) );
-
-		m_trianglesFacingLight[i] = (DotProduct(plane, m_vShadowLightOrigin) + plane[3]) > 0;
+		
+		if(m_shadowMethodType == SHADOW_TYPE_POINTLIGHT)
+		{
+			// Calculate plane distance too
+			float planedistance = -( pv1->x * (pv2->y * pv3->z - pv3->y * pv2->z) + pv2->x * ( pv3->y * pv1->z - pv1->y * pv3->z ) + pv3->x * ( pv1->y * pv2->z - pv2->y * pv1->z ) );
+			// Determine if plane is facing light
+			m_trianglesFacingLight[i] = (DotProduct(plane, m_vShadowLightOrigin) + planedistance) > 0;
+		}
+		else // SHADOW_TYPE_DIRECTIONAL
+		{
+			// Determine if plane is facing light
+			m_trianglesFacingLight[i] = DotProduct(plane, m_vShadowDirection) > 0;
+		}
 
 		// comment this 'if' block if you want to use z-pass method
 		if (m_trianglesFacingLight[i])
@@ -2747,6 +2806,7 @@ StudioSetBuffer
 */
 void CStudioModelRenderer::StudioSetBuffer( void )
 {
+	glPushClientAttrib(GL_TEXTURE_BIT);
 	glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
 
 	// Disable these to avoid slowdown bug
@@ -2777,6 +2837,7 @@ void CStudioModelRenderer::StudioClearBuffer( void )
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glPopClientAttrib();
+	glPopAttrib();
 }
 
 /*

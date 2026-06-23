@@ -795,3 +795,34 @@ public:
 	void Precache( void );
 	void KeyValue( KeyValueData *pkvd );
 };
+
+class CBaseTrigger : public CBaseToggle
+{
+public:
+	void EXPORT TeleportTouch ( CBaseEntity *pOther );
+	void KeyValue( KeyValueData *pkvd );
+	void EXPORT MultiTouch( CBaseEntity *pOther );
+	void EXPORT HurtTouch ( CBaseEntity *pOther );
+	void EXPORT CDAudioTouch ( CBaseEntity *pOther );
+	void ActivateMultiTrigger( CBaseEntity *pActivator );
+	void EXPORT MultiWaitOver( void );
+	void EXPORT CounterUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+	void EXPORT ToggleUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+	void InitTrigger( void );
+
+	virtual int	ObjectCaps( void ) { return CBaseToggle :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+};
+
+class CTriggerCDAudio : public CBaseTrigger
+{
+public:
+	static const int NUM_MP3_FILES = 29;
+	static const char* MP3_FILENAMES[NUM_MP3_FILES];
+
+public:
+	void Spawn( void );
+
+	virtual void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+	void PlayTrack( void );
+	void Touch ( CBaseEntity *pOther );
+};

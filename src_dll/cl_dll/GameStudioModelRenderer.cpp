@@ -72,7 +72,7 @@ int R_StudioDrawModel( int flags )
 {
 	return g_StudioRenderer.StudioDrawModel( flags );
 }
-
+extern void SVD_Init(void);
 /*
 ====================
 R_StudioInit
@@ -82,6 +82,8 @@ R_StudioInit
 void R_StudioInit( void )
 {
 	g_StudioRenderer.Init();
+
+	SVD_Init();
 }
 
 // The simple drawing interface we'll pass back to the engine

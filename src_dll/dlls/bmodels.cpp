@@ -179,7 +179,7 @@ void CFuncConveyor :: Spawn( void )
 void CFuncConveyor :: UpdateSpeed( float speed )
 {
 	// Encode it as an integer with 4 fractional bits
-	int speedCode = (int)(fabs(speed) * 16.0);
+	int speedCode = (int)(std::abs(speed) * 16.0);
 
 	if ( speed < 0 )
 		pev->rendercolor.x = 1;
@@ -550,13 +550,13 @@ void CFuncRotating :: RampPitchVol (int fUp)
 	
 	// get current angular velocity
 
-	vecCur = abs(vecAVel.x != 0 ? vecAVel.x : (vecAVel.y != 0 ? vecAVel.y : vecAVel.z));
+	vecCur = std::abs(vecAVel.x != 0 ? vecAVel.x : (vecAVel.y != 0 ? vecAVel.y : vecAVel.z));
 	
 	// get target angular velocity
 
 	vecFinal = (pev->movedir.x != 0 ? pev->movedir.x : (pev->movedir.y != 0 ? pev->movedir.y : pev->movedir.z));
 	vecFinal *= pev->speed;
-	vecFinal = abs(vecFinal);
+	vecFinal = std::abs(vecFinal);
 
 	// calc volume and pitch as % of final vol and pitch
 
@@ -592,9 +592,9 @@ void CFuncRotating :: SpinUp( void )
 	vecAVel = pev->avelocity;// cache entity's rotational velocity
 
 	// if we've met or exceeded target speed, set target speed and stop thinking
-	if (	abs(vecAVel.x) >= abs(pev->movedir.x * pev->speed)	&&
-			abs(vecAVel.y) >= abs(pev->movedir.y * pev->speed)	&&
-			abs(vecAVel.z) >= abs(pev->movedir.z * pev->speed) )
+	if (std::abs(vecAVel.x) >= std::abs(pev->movedir.x * pev->speed)	&&
+		std::abs(vecAVel.y) >= std::abs(pev->movedir.y * pev->speed)	&&
+		std::abs(vecAVel.z) >= std::abs(pev->movedir.z * pev->speed) )
 	{
 		pev->avelocity = pev->movedir * pev->speed;// set speed in case we overshot
 		EMIT_SOUND_DYN(ENT(pev), CHAN_STATIC, (char *)STRING(pev->noiseRunning), 
@@ -805,7 +805,7 @@ void CPendulum :: Spawn( void )
 	if (pev->speed == 0)
 		pev->speed = 100;
 
-	m_accel = (pev->speed * pev->speed) / (2 * fabs(m_distance));	// Calculate constant acceleration from speed and distance
+	m_accel = (pev->speed * pev->speed) / (2 * std::abs(m_distance));	// Calculate constant acceleration from speed and distance
 	m_maxSpeed = pev->speed;
 	m_start = pev->angles;
 	m_center = pev->angles + (m_distance * 0.5) * pev->movedir;

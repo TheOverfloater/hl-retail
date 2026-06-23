@@ -65,7 +65,8 @@ public:
 
 	int MsgFunc_ELight( const char *pszName, int iSize, void *pBuf );
 
-	void AddEntityLight( int entindex, const vec3_t& origin, const vec3_t& color, float radius, bool isTemporary );
+	void AddEntityLight( int entindex, const vec3_t& origin, const vec3_t& color, float radius, bool isTemporary, elighttype_t type, float strength = 0, float die = 0);
+	void AddEntityLight( int entindex, const vec3_t& origin, const vec3_t& color, float radius, bool isTemporary, float die = 0);
 	void RemoveEntityLight( int entindex );
 
 	void GetLightList( vec3_t& origin, const vec3_t& mins, const vec3_t& maxs, elight_t** lightArray, unsigned int* numLights );
@@ -90,6 +91,7 @@ private:
 	PFNGLACTIVETEXTUREPROC			glActiveTexture;
 
 	cvar_t*		m_pCvarDebugELights;
+	cvar_t*		m_pCvarLightMultiplier;
 };
 
 extern CELightList gELightList;

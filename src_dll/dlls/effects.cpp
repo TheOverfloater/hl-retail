@@ -2331,6 +2331,7 @@ void CEnvELight::SendInitMessages ( CBaseEntity* pPlayer )
 		WRITE_BYTE(pev->rendercolor.x);
 		WRITE_BYTE(pev->rendercolor.y);
 		WRITE_BYTE(pev->rendercolor.z);
+		WRITE_BYTE(FALSE);
 		WRITE_COORD(pev->renderamt);
 	}
 	MESSAGE_END();

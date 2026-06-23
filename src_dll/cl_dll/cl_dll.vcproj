@@ -28,6 +28,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../cl_dlls"
+				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../cl_dlls/client.dll&#x0D;&#x0A;"
+				Outputs="client.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -110,8 +113,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../cl_dlls"
-				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../cl_dlls/$(ProjectName).dll"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -128,6 +130,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../cl_dlls"
+				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../cl_dlls/client.dll&#x0D;&#x0A;"
+				Outputs="client.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -211,8 +216,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../cl_dlls"
-				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../cl_dlls/$(ProjectName).dll"
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>
@@ -764,6 +768,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\lightstyle.cpp"
+				>
+			</File>
+			<File
 				RelativePath="menu.cpp"
 				>
 				<FileConfiguration
@@ -806,6 +814,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\mp3.cpp"
+				>
 			</File>
 			<File
 				RelativePath="overview.cpp"
@@ -2145,6 +2157,10 @@
 			</File>
 			<File
 				RelativePath="kbutton.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mp3.h"
 				>
 			</File>
 			<File

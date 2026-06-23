@@ -516,25 +516,6 @@ void CRenderFxManager :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 	}
 }
 
-
-
-class CBaseTrigger : public CBaseToggle
-{
-public:
-	void EXPORT TeleportTouch ( CBaseEntity *pOther );
-	void KeyValue( KeyValueData *pkvd );
-	void EXPORT MultiTouch( CBaseEntity *pOther );
-	void EXPORT HurtTouch ( CBaseEntity *pOther );
-	void EXPORT CDAudioTouch ( CBaseEntity *pOther );
-	void ActivateMultiTrigger( CBaseEntity *pActivator );
-	void EXPORT MultiWaitOver( void );
-	void EXPORT CounterUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	void EXPORT ToggleUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	void InitTrigger( void );
-
-	virtual int	ObjectCaps( void ) { return CBaseToggle :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-};
-
 LINK_ENTITY_TO_CLASS( trigger, CBaseTrigger );
 
 /*
@@ -657,14 +638,37 @@ void CTriggerMonsterJump :: Touch( CBaseEntity *pOther )
 //
 // trigger_cdaudio - starts/stops cd audio tracks
 //
-class CTriggerCDAudio : public CBaseTrigger
+const char* CTriggerCDAudio::MP3_FILENAMES[NUM_MP3_FILES] =
 {
-public:
-	void Spawn( void );
-
-	virtual void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	void PlayTrack( void );
-	void Touch ( CBaseEntity *pOther );
+	"",
+	"",
+	"Half-Life01.mp3",
+	"Prospero01.mp3",
+	"Half-Life12.mp3",
+	"Half-Life07.mp3",
+	"Half-Life10.mp3",
+	"Suspense01.mp3",
+	"Suspense03.mp3",
+	"Half-Life09.mp3",
+	"Half-Life02.mp3",
+	"Half-Life13.mp3",
+	"Half-Life04.mp3",
+	"Half-Life15.mp3",
+	"Half-Life14.mp3",
+	"Half-Life16.mp3",
+	"Suspense02.mp3",
+	"Half-Life03.mp3",
+	"Half-Life08.mp3",
+	"Prospero02.mp3",
+	"Half-Life05.mp3",
+	"Prospero04.mp3",
+	"Half-Life11.mp3",
+	"Half-Life06.mp3",
+	"Prospero03.mp3",
+	"Half-Life17.mp3",
+	"Prospero05.mp3",
+	"Suspense05.mp3",
+	"Suspense07.mp3",
 };
 
 LINK_ENTITY_TO_CLASS( trigger_cdaudio, CTriggerCDAudio );
@@ -712,14 +716,15 @@ void PlayCDTrack( int iTrack )
 
 	if ( iTrack == -1 )
 	{
-		CLIENT_COMMAND ( pClient, "cd pause\n");
+		CLIENT_COMMAND ( pClient, "stopaudio\n");
 	}
 	else
 	{
-		char string [ 64 ];
+		if(iTrack < 0 || iTrack >= CTriggerCDAudio::NUM_MP3_FILES)
+			return;
 
-		sprintf( string, "cd play %3d\n", iTrack );
-		CLIENT_COMMAND ( pClient, string);
+		CBasePlayer* pPlayer = (CBasePlayer*)CBaseEntity::Instance(pClient);
+		pPlayer->PlayMusic(CTriggerCDAudio::MP3_FILENAMES[iTrack], false);
 	}
 }
 

@@ -303,7 +303,7 @@ void CBaseDoor::Spawn( )
 	
 	m_vecPosition1	= pev->origin;
 	// Subtract 2 from size because the engine expands bboxes by 1 in all directions making the size too big
-	m_vecPosition2	= m_vecPosition1 + (pev->movedir * (fabs( pev->movedir.x * (pev->size.x-2) ) + fabs( pev->movedir.y * (pev->size.y-2) ) + fabs( pev->movedir.z * (pev->size.z-2) ) - m_flLip));
+	m_vecPosition2	= m_vecPosition1 + (pev->movedir * (std::abs( pev->movedir.x * (pev->size.x-2) ) + std::abs( pev->movedir.y * (pev->size.y-2) ) + std::abs( pev->movedir.z * (pev->size.z-2) ) - m_flLip));
 	ASSERTSZ(m_vecPosition1 != m_vecPosition2, "door start/end positions are equal");
 	if ( FBitSet (pev->spawnflags, SF_DOOR_START_OPEN) )
 	{	// swap pos1 and pos2, put door at pos2
@@ -889,7 +889,10 @@ public:
 	virtual int	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
+	void EXPORT MomentaryDoorStop( void );
+
 	BYTE	m_bMoveSnd;			// sound a door makes while moving	
+	bool	m_bSoundPlaying;
 };
 
 LINK_ENTITY_TO_CLASS( momentary_door, CMomentaryDoor );
@@ -918,7 +921,7 @@ void CMomentaryDoor::Spawn( void )
 	
 	m_vecPosition1	= pev->origin;
 	// Subtract 2 from size because the engine expands bboxes by 1 in all directions making the size too big
-	m_vecPosition2	= m_vecPosition1 + (pev->movedir * (fabs( pev->movedir.x * (pev->size.x-2) ) + fabs( pev->movedir.y * (pev->size.y-2) ) + fabs( pev->movedir.z * (pev->size.z-2) ) - m_flLip));
+	m_vecPosition2	= m_vecPosition1 + (pev->movedir * (std::abs( pev->movedir.x * (pev->size.x-2) ) + std::abs( pev->movedir.y * (pev->size.y-2) ) + std::abs( pev->movedir.z * (pev->size.z-2) ) - m_flLip));
 	ASSERTSZ(m_vecPosition1 != m_vecPosition2, "door start/end positions are equal");
 
 	if ( FBitSet (pev->spawnflags, SF_DOOR_START_OPEN) )
@@ -981,7 +984,6 @@ void CMomentaryDoor::Precache( void )
 
 void CMomentaryDoor::KeyValue( KeyValueData *pkvd )
 {
-
 	if (FStrEq(pkvd->szKeyName, "movesnd"))
 	{
 		m_bMoveSnd = atof(pkvd->szValue);
@@ -1010,6 +1012,10 @@ void CMomentaryDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 		value = 1.0;
 	Vector move = m_vecPosition1 + (value * (m_vecPosition2 - m_vecPosition1));
 	
+	ALERT(at_console, "Current: %.2f %.2f %.2f, Target: %.2f, %.2f, %.2f.\n", 
+		pev->origin.x, pev->origin.y, pev->origin.z,
+		m_vecPosition2.x, m_vecPosition2.y, m_vecPosition2.z);
+
 	Vector delta = move - pev->origin;
 	float speed = delta.Length() * 10;
 
@@ -1017,10 +1023,28 @@ void CMomentaryDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	{
 		// This entity only thinks when it moves, so if it's thinking, it's in the process of moving
 		// play the sound when it starts moving
-		if ( pev->nextthink < pev->ltime || pev->nextthink == 0 )
+		if ( !FStringNull(pev->noiseMoving) && (pev->nextthink < pev->ltime || pev->nextthink == 0) && !m_bSoundPlaying )
+		{
 			EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving), 1, ATTN_NORM);
+			SetMoveDone(&CMomentaryDoor::MomentaryDoorStop);
+			m_bSoundPlaying = true;
+		}
 
 		LinearMove( move, speed );
 	}
 
+	if(m_bSoundPlaying && (pev->origin - move).Length() < 0.01)
+		MomentaryDoorStop();
+}
+
+void CMomentaryDoor::MomentaryDoorStop( void )
+{
+	if(m_bSoundPlaying && !FStringNull(pev->noiseMoving))
+	{
+		STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving));
+		m_bSoundPlaying = false;
+	}
+
+	if(!FStringNull(pev->noiseArrived))
+		EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseArrived), 1, ATTN_NORM);
 }

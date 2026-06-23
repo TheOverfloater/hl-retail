@@ -19,4 +19,5 @@ extern void SVD_CreateStencilFBO( void );
 extern void SVD_CalcRefDef( ref_params_t* pparams );
 extern void SVD_DrawTransparentTriangles( void );
 extern void SVD_PerformFBOBlit( void );
+extern int R_DetermineSurfaceStructSize( void );
 #endif

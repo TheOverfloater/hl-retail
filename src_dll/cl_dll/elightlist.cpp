@@ -39,6 +39,7 @@
 #include "elightlist.h"
 #include "com_model.h"
 #include "r_studioint.h"
+#include "svd_render.h"
 
 // Class declaration
 CELightList gELightList;
@@ -46,6 +47,12 @@ CELightList gELightList;
 extern engine_studio_api_t IEngineStudio;
 extern char* COM_ReadLine( char* pstr, char* pstrOut );
 extern void COM_ToLowerCase( char* pstr );
+
+extern model_t* g_pWorld;
+extern int g_msurfaceStructSize;
+
+// Direct light value, same as in HLRAD
+static const float DIRECT_LIGHT = 0.1;
 
 // Testing function
 void __CmdFunc_MakeLight( void )
@@ -57,7 +64,7 @@ void __CmdFunc_MakeLight( void )
 	lightColor[2] = atof(gEngfuncs.Cmd_Argv(4))/255.0f;
 	float radius = atof(gEngfuncs.Cmd_Argv(5));
 
-	gELightList.AddEntityLight(entIndex, gHUD.m_vecOrigin, lightColor, radius, false);
+	gELightList.AddEntityLight(entIndex, gHUD.m_vecOrigin, lightColor, radius, false, EL_TYPE_NORMAL);
 }
 
 int __MsgFunc_ELight( const char *pszName, int iSize, void *pBuf )
@@ -79,7 +86,8 @@ void CELightList::Init( void )
 
 	glActiveTexture = (PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
 
-	m_pCvarDebugELights = CVAR_CREATE( "r_debug_elights", "0", FCVAR_CLIENTDLL );
+	m_pCvarDebugELights		= CVAR_CREATE( "r_debug_elights", "0", FCVAR_CLIENTDLL );
+	m_pCvarLightMultiplier	= CVAR_CREATE( "gl_surflight_multiplier", "1", FCVAR_ARCHIVE );
 }
 
 /*
@@ -109,15 +117,46 @@ AddEntityLight
 
 ====================
 */
-void CELightList::AddEntityLight( int entindex, const vec3_t& origin, const vec3_t& color, float radius, bool isTemporary )
+void CELightList::AddEntityLight( int entindex, const vec3_t& origin, const vec3_t& color, float radius, bool isTemporary, float die )
 {
-	elight_t* plight = NULL;
-	for(int i = 0; i < m_iNumEntityLights; i++)
+	AddEntityLight(entindex, origin, color, radius, isTemporary, EL_TYPE_NORMAL, 0, die);
+}
+
+/*
+====================
+AddEntityLight
+
+====================
+*/
+void CELightList::AddEntityLight( int entindex, const vec3_t& origin, const vec3_t& color, float radius, bool isTemporary, elighttype_t type, float strength, float die )
+{
+	if(type == EL_TYPE_MAP_SURFLIGHT)
 	{
-		if(m_pEntityLights[i].entindex == entindex)
+		gEngfuncs.Con_Printf("%s - Type 'EL_TYPE_MAP_SURFLIGHT' specified.\n", __FUNCTION__);
+		return;
+	}
+
+	elight_t* plight = NULL;
+	if (!isTemporary)
+	{
+		for (int i = 0; i < m_iNumEntityLights; i++)
 		{
-			plight = &m_pEntityLights[i];
-			break;
+			if (m_pEntityLights[i].entindex == entindex)
+			{
+				plight = &m_pEntityLights[i];
+				break;
+			}
+		}
+	}
+	else if(entindex != 0)
+	{
+		for (int i = 0; i < m_iNumTempEntityLights; i++)
+		{
+			if (m_pTempEntityLights[i].entindex == entindex)
+			{
+				plight = &m_pTempEntityLights[i];
+				break;
+			}
 		}
 	}
 
@@ -143,9 +182,30 @@ void CELightList::AddEntityLight( int entindex, const vec3_t& origin, const vec3
 
 	plight->origin = origin;
 	plight->color = color;
-	plight->radius = radius;
+	
 	plight->entindex = entindex;
 	plight->temporary = isTemporary;
+	plight->die = die;
+	plight->type = type;
+
+	switch(type)
+	{
+	case EL_TYPE_NORMAL:
+		{
+			// Only this is needed
+			plight->radius = radius;
+			plight->intensity = 0;
+		}
+		break;
+	case EL_TYPE_MAP_POINTLIGHT:
+		{
+			float finalIntensity =  strength * m_pCvarLightMultiplier->value;
+			float minimumValue = 1.0 / 255;
+			plight->radius = sqrt(finalIntensity / minimumValue);
+			plight->intensity = strength * m_pCvarLightMultiplier->value;
+		}
+		break;
+	}
 
 	for(int i = 0; i < 3; i++)
 	{
@@ -169,6 +229,7 @@ void CELightList::RemoveEntityLight( int entindex )
 			for(int j = i; j < m_iNumEntityLights-1; j++)
 				m_pEntityLights[j] = m_pEntityLights[j+1];
 
+			m_iNumEntityLights--;
 			return;
 		}
 	}
@@ -279,7 +340,7 @@ void CELightList::CalcRefDef( void )
 		lightColor.y = (float)pdlight->color.g/255.0f;
 		lightColor.z = (float)pdlight->color.b/255.0f;
 
-		AddEntityLight( pdlight->key, pdlight->origin, lightColor, pdlight->radius*8, true );
+		AddEntityLight(pdlight->key, pdlight->origin, lightColor, pdlight->radius*8, true, pdlight->die);
 	}
 
 	pdlight = m_pGoldSrcDLights;
@@ -293,11 +354,26 @@ void CELightList::CalcRefDef( void )
 		lightColor.y = (float)pdlight->color.g/255.0f;
 		lightColor.z = (float)pdlight->color.b/255.0f;
 
-		AddEntityLight( pdlight->key, pdlight->origin, lightColor, pdlight->radius, true );
+		AddEntityLight(pdlight->key, pdlight->origin, lightColor, pdlight->radius, true, pdlight->die );
+	}
+
+	for (int i = 0; i < m_iNumTempEntityLights; i++)
+	{
+		elight_t& el = m_pTempEntityLights[i];
+		if (el.die && el.die < fltime)
+		{
+			for (int j = i; j < m_iNumTempEntityLights - 1; j++)
+				m_pTempEntityLights[j] = m_pTempEntityLights[j + 1];
+
+			m_iNumEntityLights--;
+			i--;
+			continue;
+		}
 	}
 
 	if(!m_readLightsRad)
 	{
+		g_pWorld = IEngineStudio.GetModelByIndex(1);
 		ReadLightsRadFile();
 		m_readLightsRad = true;
 	}
@@ -371,12 +447,37 @@ int CELightList::MsgFunc_ELight( const char *pszName, int iSize, void *pBuf )
 	for(int i = 0; i < 3; i++)
 		origin[i] = READ_COORD();
 
-	vec3_t color;
+	Vector color;
 	for(int i = 0; i < 3; i++)
-		color[i] = (float)READ_BYTE()/255.0f;
+		color[i] = READ_BYTE();
 
-	float radius = READ_COORD()*9.5;
-	AddEntityLight(entindex, origin, color, radius, false);
+	bool isMapLight = READ_BYTE() == 1 ? true : false;
+
+	elighttype_t type;
+	float strength;
+	float radius;
+
+	if(isMapLight)
+	{
+		strength = READ_COORD();
+		type = EL_TYPE_MAP_POINTLIGHT;
+		radius = 0;
+
+		for(int i = 0; i < 3; i++)
+			color[i] = pow( color[i] / 114.0, 0.6 ) * 264;
+	}
+	else
+	{
+		radius = READ_COORD()*9.5;
+		type = EL_TYPE_NORMAL;
+		strength = 0;
+	}
+
+	// Convert from 0-255 to 0-1
+	for(int i = 0; i < 3; i++)
+		color[i] = color[i] / 255.0f;
+
+	AddEntityLight(entindex, origin, color, radius, false, type, strength);
 
 	return 1;
 }
@@ -416,7 +517,6 @@ void CELightList::ReadLightsRadFile( void )
 		int colorR = 0;
 		int colorG = 0;
 		int colorB = 0;
-		int strength = 0;
 
 		// Get light texture name
 		char* plstr = gEngfuncs.COM_ParseFile(szLine, textureName);
@@ -466,10 +566,14 @@ void CELightList::ReadLightsRadFile( void )
 		else if(colorB > 255)
 			colorB = 255;
 
+		colorR = pow( colorR / 114.0, 0.6 ) * 264;
+		colorG = pow( colorG / 114.0, 0.6 ) * 264;
+		colorB = pow( colorB / 114.0, 0.6 ) * 264;
+
 		// Get strength
 		plstr = gEngfuncs.COM_ParseFile(plstr, szToken);
 
-		strength = atoi(szToken);
+		float strength = atoi(szToken);
 		if(strength < 0)
 			strength = 0;
 
@@ -498,14 +602,17 @@ void CELightList::ReadLightsRadFile( void )
 		return;
 
 	char texName[64];
+	int numStuckInSolid = 0;
 
-	// Array of light-emitting surfaces
-	std::vector<lightsurface_t> lightSurfacesVector;
+	if (!g_msurfaceStructSize)
+		g_msurfaceStructSize = R_DetermineSurfaceStructSize();
 
 	// Parse through all surfaces and build lit surface array
-	msurface_t* psurface = pWorld->surfaces;
-	for(int i = 0; i < pWorld->numsurfaces; i++, psurface++)
+	byte* pfirstsurfbyteptr = reinterpret_cast<byte*>(g_pWorld->surfaces);
+	for(int i = 0; i < pWorld->numsurfaces; i++)
 	{
+		msurface_t* psurface = reinterpret_cast<msurface_t*>(pfirstsurfbyteptr + g_msurfaceStructSize * (g_pWorld->firstmodelsurface + i));
+
 		// See if surface binds to a texlight
 		mtexinfo_t* ptexinfo = psurface->texinfo;
 		if(!ptexinfo->texture)
@@ -517,7 +624,7 @@ void CELightList::ReadLightsRadFile( void )
 		texlight_t* ptexlight = NULL;
 		for(int j = 0; j < m_numTexLights; j++)
 		{
-			if(!strcmp(m_texLights[j].texname, texName))
+			if(!strcmpi(m_texLights[j].texname, texName))
 			{
 				ptexlight = &m_texLights[j];
 				break;
@@ -527,130 +634,82 @@ void CELightList::ReadLightsRadFile( void )
 		if(!ptexlight)
 			continue;
 
-		unsigned int j = 0;
-		for(j = 0; j < lightSurfacesVector.size(); j++)
+		// Compile vertices into an array
+		std::vector<Vector> pointsVector(psurface->numedges);
+		for(int j = 0; j < psurface->numedges; j++)
 		{
-			lightsurface_t& lsurf = lightSurfacesVector[j];
-			if(lsurf.ptexture != ptexinfo->texture)
-				continue;
+			Vector vertexOrigin;
+			int edgeIndex = pWorld->surfedges[psurface->firstedge+j];
+			if(edgeIndex > 0)
+				vertexOrigin = pWorld->vertexes[pWorld->edges[edgeIndex].v[0]].position;
+			else
+				vertexOrigin = pWorld->vertexes[pWorld->edges[-edgeIndex].v[1]].position;
 
-			if((lsurf.normal - psurface->plane->normal).Length() > 0.01)
-				continue;
-			
-			unsigned int k = 0;
-			for(; k < lsurf.verts.size(); k++)
-			{
-				int l = 0;
-				for(; l < psurface->polys->numverts; l++)
-				{
-					Vector vcoord = Vector(psurface->polys->verts[l][0],
-						psurface->polys->verts[l][1],
-						psurface->polys->verts[l][2]);
-
-					if(vcoord == lsurf.verts[k])
-						break;
-				}
-
-				if(l != psurface->polys->numverts)
-					break;
-			}
-
-			if(k != lsurf.verts.size())
-			{
-				for(int k = 0; k < psurface->polys->numverts; k++)
-				{
-					Vector vcoord = Vector((float)psurface->polys->verts[k][0],
-						(float)psurface->polys->verts[k][1],
-						(float)psurface->polys->verts[k][2]);
-
-					lsurf.verts.push_back(vcoord);
-
-					for(int l = 0; l < 3; l++)
-					{
-						if(vcoord[l] < lsurf.mins[l])
-							lsurf.mins[l] = vcoord[l];
-
-						if(vcoord[l] > lsurf.maxs[l])
-							lsurf.maxs[l] = vcoord[l];
-					}
-				}
-
-				break;
-			}
+			pointsVector[j] = vertexOrigin;
 		}
 
-		if(j == lightSurfacesVector.size())
+		// Calculate surface area
+		float surfArea = 0;
+		for (int j = 2 ; j < pointsVector.size(); j++)
 		{
-			// Create new entry
-			lightSurfacesVector.resize(lightSurfacesVector.size()+1);
-			lightsurface_t& lsurf = lightSurfacesVector[j];
-			lsurf.mins = Vector(999999, 999999, 999999);
-			lsurf.maxs = Vector(-999999, -999999, -999999);
-			lsurf.normal = psurface->plane->normal;
-			lsurf.ptexture = psurface->texinfo->texture;
-			lsurf.ptexlight = ptexlight;
-
-			if(psurface->flags & SURF_PLANEBACK)
-				VectorInverse(lsurf.normal);
-
-			for(j = 0; j < (unsigned int)psurface->polys->numverts; j++)
-			{
-				Vector vcoord = Vector((float)psurface->polys->verts[j][0],
-					(float)psurface->polys->verts[j][1],
-					(float)psurface->polys->verts[j][2]);
-
-				lsurf.verts.push_back(vcoord);
-
-				for(int l = 0; l < 3; l++)
-				{
-					if(vcoord[l] < lsurf.mins[l])
-						lsurf.mins[l] = vcoord[l];
-
-					if(vcoord[l] > lsurf.maxs[l])
-						lsurf.maxs[l] = vcoord[l];
-				}
-			}
-		}
-	}
-
-	int numStuckInSolid = 0;
-	for(unsigned int i = 0; i < lightSurfacesVector.size(); i++)
-	{
-		if(m_iNumEntityLights == MAX_ENTITY_LIGHTS)
-		{
-			gEngfuncs.Con_Printf("Exceeded MAX_ENTITY_LIGHTS.\n");
-			break;
+			Vector d1, d2, cross;
+			VectorSubtract (pointsVector[j-1], pointsVector[0], d1);
+			VectorSubtract (pointsVector[j], pointsVector[0], d2);
+			cross = CrossProduct (d1, d2);
+			surfArea += 0.5 * cross.Length();
 		}
 
-		lightsurface_t& lsurf = lightSurfacesVector[i];
-		Vector surfaceCenter = (lsurf.mins + lsurf.maxs) * 0.5;
-		Vector lightOrigin = surfaceCenter + lsurf.normal * 4.0;
+		if(surfArea < 1.0)
+			continue;
+
+		// Calculate winding center
+		Vector center = Vector(0, 0, 0);
+		for (int j = 0; j < pointsVector.size(); j++)
+			VectorAdd(pointsVector[j], center, center);
+
+		float scale = 1.0/pointsVector.size();
+		VectorScale (center, scale, center);
 		
-		int contents = gEngfuncs.PM_PointContents(lightOrigin, NULL);
+		float sign = (psurface->flags & SURF_PLANEBACK) ? -1 : 1;
+		VectorMA(center, 1.0f * sign, psurface->plane->normal, center);
+		int contents = gEngfuncs.PM_PointContents(center, NULL);
 		if(contents == CONTENTS_SOLID)
 		{
 			numStuckInSolid++;
 			continue;
 		}
 
+		if(m_iNumEntityLights == MAX_ENTITY_LIGHTS)
+		{
+			gEngfuncs.Con_Printf("Exceeded MAX_ENTITY_LIGHTS.\n");
+			break;
+		}
+
 		elight_t* pel = &m_pEntityLights[m_iNumEntityLights];
 		m_iNumEntityLights++;
 
-		pel->origin = lightOrigin;
-		pel->color.x = (float)lsurf.ptexlight->colorr / 255.0f;
-		pel->color.y = (float)lsurf.ptexlight->colorg / 255.0f;
-		pel->color.z = (float)lsurf.ptexlight->colorb / 255.0f;
+		pel->origin = center;
+
+		float scaler = ((float)ptexlight->strength / 255.0f);
+		pel->color.x = ((float)ptexlight->colorr / 255.0f);
+		pel->color.y = ((float)ptexlight->colorg / 255.0f);
+		pel->color.z = ((float)ptexlight->colorb / 255.0f);
 		
 		pel->temporary = false;
 		pel->entindex = -1;
-		
-		float colorStrength = (pel->color.x + pel->color.y + pel->color.z) / 3.0f;
-		if(colorStrength < 0.3)
-			colorStrength = 0.3;
+		pel->type = EL_TYPE_MAP_SURFLIGHT;
 
-		pel->radius = lsurf.ptexlight->strength * 0.06 * colorStrength;
-		if(pel->radius > 512)
-			pel->radius = 512;
+		VectorCopy(psurface->plane->normal, pel->normal);
+		if(psurface->flags & SURF_PLANEBACK)
+			VectorInverse(pel->normal);
+
+		VectorNormalize(pel->normal);
+
+		// Same calculations as qrad
+		float intensityNoColor = DIRECT_LIGHT * scaler * surfArea * m_pCvarLightMultiplier->value;
+		float minimumValue = 1.0 / 255;
+		pel->radius = sqrt(intensityNoColor / minimumValue);
+		pel->intensity = intensityNoColor;
 
 		for(int j = 0; j < 3; j++)
 		{
@@ -659,78 +718,5 @@ void CELightList::ReadLightsRadFile( void )
 		}
 	}
 
-	// Merge matching light sources that are very close
-	int numOptimized = 0;
-	for(int i = 0; i < m_iNumEntityLights; i++)
-	{
-		elight_t* pel1 = &m_pEntityLights[i];
-		if(pel1->entindex != -1)
-			continue;
-
-		for(int j = 0; j < m_iNumEntityLights; j++)
-		{
-			if(j == i)
-				continue;
-
-			elight_t* pel2 = &m_pEntityLights[j];
-			if(pel2->entindex != -1)
-				continue;
-
-			if(fabs(pel1->color.x - pel2->color.x) > 0.01
-				|| fabs(pel1->color.y - pel2->color.y) > 0.01
-				|| fabs(pel1->color.z - pel2->color.z) > 0.01)
-				continue;
-				
-			float dist = (pel2->origin - pel1->origin).Length();
-			if(dist < 32)
-			{
-				for(int k = j+1; k < m_iNumEntityLights; k++)
-					m_pEntityLights[k-1] = m_pEntityLights[k];
-
-				numOptimized++;
-				m_iNumEntityLights--;
-				j--;
-			}
-		}
-	}
-
-	// Check for lights being too near eachother, dim those that are too close
-	int numDimmed = 0;
-	for(int i = 0; i < m_iNumEntityLights; i++)
-	{
-		elight_t* pel1 = &m_pEntityLights[i];
-		if(pel1->entindex != -1)
-			continue;
-
-		int closeMatchCount = 0;
-		for(int j = 0; j < m_iNumEntityLights; j++)
-		{
-			if(j == i)
-				continue;
-
-			elight_t* pel2 = &m_pEntityLights[j];
-			if(pel2->entindex != -1)
-				continue;
-
-			if(fabs(pel1->color.x - pel2->color.x) > 0.01
-				|| fabs(pel1->color.y - pel2->color.y) > 0.01
-				|| fabs(pel1->color.z - pel2->color.z) > 0.01)
-				continue;
-				
-			float dist = (pel2->origin - pel1->origin).Length();
-			if(dist < 64)
-				closeMatchCount++;
-		}
-
-		if(closeMatchCount > 0)
-		{
-			float adjust = 1.0f / (float)(closeMatchCount + 1);
-			VectorScale(pel1->color, adjust, pel1->color);
-			numDimmed++;
-		}
-	}
-
 	gEngfuncs.Con_Printf("Removed %d per-vertex lights stuck in solids.\n", numStuckInSolid);
-	gEngfuncs.Con_Printf("Removed %d clumped matching per-vertex lights.\n", numOptimized);
-	gEngfuncs.Con_Printf("Dimmed %d near matching per-vertex lights.\n", numDimmed);
 }

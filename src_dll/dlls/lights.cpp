@@ -115,11 +115,12 @@ Default style is 0
 If targeted, it will toggle between on or off.
 */
 
-void CLight :: Spawn( void )
+// STENCIL SHADOWS BEGIN
+void CLight::Spawn(void)
 {
 	if (m_iStyle >= 32)
 	{
-//		CHANGE_METHOD(ENT(pev), em_use, light_use);
+		//        CHANGE_METHOD(ENT(pev), em_use, light_use);
 		if (FBitSet(pev->spawnflags, SF_LIGHT_START_OFF))
 		{
 			LIGHT_STYLE(m_iStyle, "a");
@@ -128,7 +129,7 @@ void CLight :: Spawn( void )
 		else
 		{
 			if (m_iszPattern)
-				LIGHT_STYLE(m_iStyle, (char *)STRING( m_iszPattern ));
+				LIGHT_STYLE(m_iStyle, (char*)STRING(m_iszPattern));
 			else
 				LIGHT_STYLE(m_iStyle, "m");
 
@@ -137,18 +138,17 @@ void CLight :: Spawn( void )
 	}
 }
 
-
-void CLight :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
+void CLight::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
 {
 	if (m_iStyle >= 32)
 	{
-		if ( !ShouldToggle( useType, m_isActive ) )
+		if (!ShouldToggle(useType, m_isActive))
 			return;
 
 		if (!m_isActive)
 		{
 			if (m_iszPattern)
-				LIGHT_STYLE(m_iStyle, (char *)STRING( m_iszPattern ));
+				LIGHT_STYLE(m_iStyle, (char*)STRING(m_iszPattern));
 			else
 				LIGHT_STYLE(m_iStyle, "m");
 
@@ -164,12 +164,14 @@ void CLight :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useT
 	}
 }
 
-void CLight::SendInitMessages ( CBaseEntity* pPlayer )
+extern int gmsgLightSource;
+extern int gmsgLightStyle;
+void CLight::SendInitMessages(CBaseEntity* pPlayer)
 {
-	if(pPlayer && !m_isActive)
+	if (pPlayer && !m_isActive)
 		return;
 
-	if(pPlayer)
+	if (pPlayer)
 		MESSAGE_BEGIN(MSG_ONE, gmsgELight, NULL, pPlayer->pev);
 	else
 		MESSAGE_BEGIN(MSG_ALL, gmsgELight, NULL);
@@ -177,7 +179,7 @@ void CLight::SendInitMessages ( CBaseEntity* pPlayer )
 	WRITE_SHORT(entindex());
 	WRITE_BYTE(m_isActive ? 1 : 0);
 
-	if(m_isActive)
+	if (m_isActive)
 	{
 		WRITE_COORD(pev->origin.x);
 		WRITE_COORD(pev->origin.y);
@@ -185,11 +187,39 @@ void CLight::SendInitMessages ( CBaseEntity* pPlayer )
 		WRITE_BYTE(m_colorR);
 		WRITE_BYTE(m_colorG);
 		WRITE_BYTE(m_colorB);
-		WRITE_COORD((float)m_brightness / 9);
+		WRITE_BYTE(TRUE);
+		WRITE_COORD(m_brightness);
 	}
 	MESSAGE_END();
-}
+	
+	if (m_iStyle >= 32)
+	{
+		char* pstrPattern;
+		if(m_isActive)
+		{
+			if (m_iszPattern)
+				pstrPattern = (char*)STRING(m_iszPattern);
+			else
+				pstrPattern = "m";
 
+			m_isActive = TRUE;
+		}
+		else
+		{
+			pstrPattern = "a";
+		}
+
+		if(pPlayer)
+			MESSAGE_BEGIN( MSG_ONE, gmsgLightStyle, NULL, pPlayer->pev );
+		else
+			MESSAGE_BEGIN( MSG_ALL, gmsgLightStyle, NULL );
+
+			WRITE_BYTE(m_iStyle);
+			WRITE_STRING(pstrPattern);
+		MESSAGE_END();
+	}
+}
+// STENCIL SHADOWS END
 //
 // shut up spawn functions for new spotlights
 //

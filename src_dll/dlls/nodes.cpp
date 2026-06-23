@@ -344,7 +344,7 @@ int	CGraph :: FindNearestLink ( const Vector &vecTestPoint, int *piNearestLink, 
 			vecSpot2 = PNodeLink ( i, j )->m_vecOrigin;
 
 			// these values need a little attention now and then, or sometimes ramps cause trouble.
-			if ( fabs ( vecSpot1.z - vecTestPoint.z ) > 48 && fabs ( vecSpot2.z - vecTestPoint.z ) > 48 )
+			if ( std::abs ( vecSpot1.z - vecTestPoint.z ) > 48 && std::abs ( vecSpot2.z - vecTestPoint.z ) > 48 )
 			{
 				// if both endpoints of the line are 32 units or more above or below the monster, 
 				// the monster won't be able to get to them, so we do a bit of trivial rejection here.
@@ -381,7 +381,7 @@ int	CGraph :: FindNearestLink ( const Vector &vecTestPoint, int *piNearestLink, 
 			}
 			else
 			{// point inside line
-				flDistToLine = fabs( DotProduct ( vec2TestPoint - vec2Spot2, vec2Normal ) );
+				flDistToLine = std::abs( DotProduct ( vec2TestPoint - vec2Spot2, vec2Normal ) );
 				fCurrentAlongLine = TRUE;
 			}
 
@@ -3422,7 +3422,7 @@ void CGraph :: TestRoutingTables( void )
 								ALERT(at_aiconsole, "No link.\n");
 							}
 						}
-						if (fabs(flDistance1 - flDistance2) > 0.10)
+						if (std::abs(flDistance1 - flDistance2) > 0.10)
 						{
 #else
 						if (cPathSize1 != cPathSize2 || memcmp(pMyPath, pMyPath2, sizeof(int)*cPathSize1) != 0)

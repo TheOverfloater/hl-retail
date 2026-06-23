@@ -17,8 +17,12 @@
 #include "event_args.h"
 #include "pmtrace.h"
 #include "pm_defs.h"
+#include "lightstyle.h"
 
 extern engine_studio_api_t IEngineStudio;
+
+extern model_t* g_pWorld;
+extern int g_msurfaceStructSize;
 
 /*
 ====================
@@ -349,9 +353,10 @@ int RecursiveLightPoint( model_t* pworld, mnode_t *node, const vec3_t &start, co
 	if ((back < 0) == side)
 		return FALSE;
 	
-	surf = pworld->surfaces + node->firstsurface;
+	byte* pfirstsurfbyteptr = reinterpret_cast<byte*>(g_pWorld->surfaces);
 	for (i = 0; i < node->numsurfaces; i++, surf++)
 	{
+		surf = reinterpret_cast<msurface_t*>(pfirstsurfbyteptr + g_msurfaceStructSize * (node->firstsurface + i));
 		if (surf->flags & (SURF_DRAWTILED | SURF_DRAWSKY))
 			continue;	// no lightmaps
 
@@ -378,20 +383,34 @@ int RecursiveLightPoint( model_t* pworld, mnode_t *node, const vec3_t &start, co
 
 		lightmap = surf->samples;
 
+		color = Vector(0, 0, 0);
 		if (lightmap)
 		{
-			int surfindex = node->firstsurface+i;
 			int size = ((surf->extents[1]>>4)+1)*((surf->extents[0]>>4)+1);
 			lightmap += dt * ((surf->extents[0]>>4)+1) + ds;
+			for(int j = 0; j < MAXLIGHTMAPS && surf->styles[j] != 255; j++)
+			{
+				float flScale;
+				if(j == 0)
+				{
+					float flIntensity = (lightmap->r + lightmap->g + lightmap->b)/3;
+					flScale = flIntensity/50;
+				}
+				else
+				{
+					flScale = gLightStyles.GetLightStyleValue(surf->styles[j]);
+				}
 
-			float flIntensity = (lightmap->r + lightmap->g + lightmap->b)/3;
-			float flScale = flIntensity/50;
+				if(flScale > 1.0) 
+					flScale = 1.0;
 
-			if(flScale > 1.0) 
-				flScale = 1.0;
+				Vector curcolor;
+				ParseColor(curcolor, lightmap);
+				VectorMA(color, flScale, curcolor, color);
 
-			ParseColor(color, lightmap);
-			VectorScale(color, flScale, color);
+				lightmap += ((surf->extents[0] >> 4) + 1) *
+					((surf->extents[1] >> 4) + 1);
+			}
 		}	
 		else
 		{

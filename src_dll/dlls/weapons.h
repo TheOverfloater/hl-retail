@@ -504,6 +504,7 @@ public:
 	void EXPORT SwingAgain( void );
 	void EXPORT Smack( void );
 	int GetItemInfo(ItemInfo *p);
+	void WeaponIdle( void );
 
 	void PrimaryAttack( void );
 	int Swing( int fFirst );

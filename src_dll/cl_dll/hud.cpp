@@ -39,6 +39,8 @@
 #include "svd_render.h"
 #include "svdformat.h"
 #include "svd_render.h"
+#include "lightstyle.h"
+#include "mp3.h"
 
 class CHLVoiceStatusHelper : public IVoiceStatusHelper
 {
@@ -276,7 +278,12 @@ int __MsgFunc_AllowSpec(const char *pszName, int iSize, void *pbuf)
 		return gViewPort->MsgFunc_AllowSpec( pszName, iSize, pbuf );
 	return 0;
 }
- 
+
+int __MsgFunc_PlayMP3(const char *pszName, int iSize, void *pbuf )
+{
+	return gHUD.MsgFunc_PlayMP3( pszName, iSize, pbuf );
+}
+
 Vector TraceForward( void )
 {
 	Vector v_angles = gHUD.m_vecAngles;
@@ -315,6 +322,11 @@ cl_entity_t* TraceForwardEntity( void )
 
 	int entindex = gEngfuncs.pEventAPI->EV_IndexFromTrace(&tr);
 	return gEngfuncs.GetEntityByIndex(entindex);
+}
+
+void __CmdFunc_StopMP3( void )
+{
+	gMP3.StopMP3(NULL);
 }
 
 void __CmdFunc_BlobExplosion( void )
@@ -601,6 +613,13 @@ void CHud :: Init( void )
 	HOOK_MESSAGE( SetFOV );
 	HOOK_MESSAGE( Concuss );
 
+	//KILLAR: MP3	
+	if(gMP3.Init())
+	{
+		HOOK_MESSAGE( PlayMP3 );
+		HOOK_COMMAND( "stopaudio", StopMP3 );
+	}
+
 	// TFFree CommandMenu
 	HOOK_COMMAND( "+commandmenu", OpenCommandMenu );
 	HOOK_COMMAND( "-commandmenu", CloseCommandMenu );
@@ -704,6 +723,7 @@ void CHud :: Init( void )
 	m_StatusIcons.Init();
 	GetClientVoiceMgr()->Init(&g_VoiceStatusHelper, (vgui::Panel**)&gViewPort);
 	gELightList.Init();
+	gLightStyles.Init();
 
 	m_Menu.Init();
 	
@@ -717,8 +737,6 @@ void CHud :: Init( void )
 	// HLRETAIL
 
 	gFog.Init();
-
-	SVD_Init();
 }
 
 // CHud destructor
@@ -744,6 +762,8 @@ CHud :: ~CHud()
 	ServersShutdown();
 	SVD_Clear();
 	SVD_Shutdown();
+
+	gMP3.Shutdown();
 }
 
 // GetSpriteIndex()
@@ -868,6 +888,8 @@ void CHud :: VidInit( void )
 	gELightList.VidInit();
 	gFog.VidInit();
 	SVD_VidInit();
+	gLightStyles.VidInit();
+	gMP3.VidInit();
 }
 
 int CHud::MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf)

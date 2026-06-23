@@ -739,7 +739,7 @@ void CGib :: BounceGibTouch ( CBaseEntity *pOther )
 		if ( m_material != matNone && RANDOM_LONG(0,2) == 0 )
 		{
 			float volume;
-			float zvel = fabs(pev->velocity.z);
+			float zvel = std::abs(pev->velocity.z);
 		
 			volume = 0.8 * min(1.0, ((float)zvel) / 450.0);
 
@@ -1327,7 +1327,7 @@ void CBaseMonster :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector
 {
 	if ( pev->takedamage )
 	{
-		if( pevAttacker )
+		if( pevAttacker && BloodColor() != DONT_BLEED && (bitsDamageType & DMG_BULLET) )
 		{
 			CBaseEntity *pEntity = CBaseEntity::Instance( pevAttacker );
 			if(pEntity->IsPlayer())
@@ -1339,6 +1339,7 @@ void CBaseMonster :: TraceAttack( entvars_t *pevAttacker, float flDamage, Vector
 				}
 			}
 		}
+
 		m_LastHitGroup = ptr->iHitgroup;
 
 		switch ( ptr->iHitgroup )
@@ -1427,6 +1428,12 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				vecTracerSrc = vecSrc;
 			}
 			
+			Vector vecTracerEnd;
+			if(UTIL_PointContents(tr.vecEndPos) != CONTENTS_SKY)
+				vecTracerEnd = tr.vecEndPos;
+			else
+				vecTracerEnd = vecEnd;
+
 			if ( iTracerFreq != 1 )		// guns that always trace also always decal
 				tracer = 1;
 			switch( iBulletType )
@@ -1440,15 +1447,16 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 					WRITE_COORD( vecTracerSrc.x );
 					WRITE_COORD( vecTracerSrc.y );
 					WRITE_COORD( vecTracerSrc.z );
-					WRITE_COORD( tr.vecEndPos.x );
-					WRITE_COORD( tr.vecEndPos.y );
-					WRITE_COORD( tr.vecEndPos.z );
+					WRITE_COORD( vecTracerEnd.x );
+					WRITE_COORD( vecTracerEnd.y );
+					WRITE_COORD( vecTracerEnd.z );
 				MESSAGE_END();
 				break;
 			}
 		}
+
 		// do damage, paint decals
-		if (tr.flFraction != 1.0)
+		if (tr.flFraction != 1.0 && UTIL_PointContents(tr.vecEndPos) != CONTENTS_SKY)
 		{
 			CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
 
@@ -1546,7 +1554,7 @@ Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecD
 		UTIL_TraceLine(vecSrc, vecEnd, dont_ignore_monsters, ENT(pev)/*pentIgnore*/, &tr);
 		
 		// do damage, paint decals
-		if (tr.flFraction != 1.0)
+		if (tr.flFraction != 1.0 && UTIL_PointContents(tr.vecEndPos) != CONTENTS_SKY) 
 		{
 			CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
 

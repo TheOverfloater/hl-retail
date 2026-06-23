@@ -20,6 +20,20 @@
 
 */
 
+// Same as in lightstyle.cpp
+#define MAX_PATTERN_LENGTH	255
+#define MAX_LIGHTSTYLES		128
+
+struct svlightstyle_t
+{
+	char pattern[MAX_PATTERN_LENGTH];
+	int index;
+	bool updated;
+};
+
+svlightstyle_t g_lightstyles[MAX_LIGHTSTYLES];
+int g_numlightstyles = 0;
+
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -1636,6 +1650,88 @@ void UTIL_StripToken( const char *pKey, char *pDest )
 	pDest[i] = 0;
 }
 
+extern int gmsgLightStyle;
+void UTIL_SetLightStyle( int index, char* pstrStyle )
+{
+	if(index > MAX_LIGHTSTYLES)
+	{
+		ALERT(at_console, "%s - Index %d exceeds MAX_LIGHTSTYLES.\n", __FUNCTION__, index);
+		return;
+	}
+
+	if(strlen(pstrStyle) >= MAX_PATTERN_LENGTH)
+	{
+		ALERT(at_console, "%s - Pattern for style with index %d exceeds MAX_PATTERN_LENGTH.\n", __FUNCTION__, index);
+		return;
+	}
+
+	svlightstyle_t* pstyle = NULL;
+	for(int i = 0; i < g_numlightstyles; i++)
+	{
+		svlightstyle_t& style = g_lightstyles[i];
+		if(style.index == index)
+		{
+			pstyle = &style;
+			break;
+		}
+	}
+
+	if(!pstyle)
+	{
+		if(g_numlightstyles == MAX_LIGHTSTYLES)
+		{
+			ALERT(at_console, "%s - Exceeded MAX_LIGHTSTYLES.\n", __FUNCTION__);
+			return;
+		}
+		else
+		{
+			pstyle = &g_lightstyles[g_numlightstyles];
+			g_numlightstyles++;
+		}
+	}
+
+	strcpy(pstyle->pattern, pstrStyle);
+	pstyle->index = index;
+	pstyle->updated = true;
+
+	// Tell the engine also
+	g_engfuncs.pfnLightStyle(index, pstrStyle);
+}
+
+void UTIL_LightStyleThink( void )
+{
+	for(int i = 0; i < g_numlightstyles; i++)
+	{
+		svlightstyle_t& style = g_lightstyles[i];
+		if(!style.updated)
+			continue;
+
+		MESSAGE_BEGIN( MSG_ALL, gmsgLightStyle, NULL );
+			WRITE_BYTE(style.index);
+			WRITE_STRING(style.pattern);
+		MESSAGE_END();
+
+		style.updated = false;
+	}
+}
+
+void UTIL_ResetLightStyles( void )
+{
+	memset(g_lightstyles, 0, sizeof(g_lightstyles));
+	g_numlightstyles = 0;
+}
+
+void UTIL_SetClientLightStyles( edict_t* pclient )
+{
+	for(int i = 0; i < g_numlightstyles; i++)
+	{
+		svlightstyle_t& style = g_lightstyles[i];
+		MESSAGE_BEGIN( MSG_ONE, gmsgLightStyle, NULL, &pclient->v );
+			WRITE_BYTE(style.index);
+			WRITE_STRING(style.pattern);
+		MESSAGE_END();
+	}
+}
 
 // --------------------------------------------------------------
 //

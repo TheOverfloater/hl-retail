@@ -28,6 +28,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../dlls"
+				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../dlls/$(ProjectName).dll&#x0D;&#x0A;"
+				Outputs="hl.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -113,8 +116,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../dlls"
-				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../dlls/$(ProjectName).dll"
+				CommandLine=""
+				ExcludedFromBuild="false"
 			/>
 		</Configuration>
 		<Configuration
@@ -211,6 +214,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				ExcludedFromBuild="false"
 			/>
 		</Configuration>
 		<Configuration
@@ -227,6 +231,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../dlls"
+				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../dlls/$(ProjectName).dll&#x0D;&#x0A;"
+				Outputs="hl.dll"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -308,8 +315,8 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Copy $(TargetName)$(TargetExt) to $(SolutionDir)../dlls"
-				CommandLine="copy /Y &quot;$(OutDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)/../dlls/$(ProjectName).dll"
+				CommandLine=""
+				ExcludedFromBuild="false"
 			/>
 		</Configuration>
 	</Configurations>
